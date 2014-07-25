@@ -31,6 +31,7 @@ message ValueType {
     repeated float     FloatValue    = 8 [packed=true];
     repeated bool      BoolValue     = 9 [packed=true];
     repeated bytes     BytesValue    = 10;
+    repeated bool      IsNull        = 11 [packed=true];
 }
 
 message KeyValue {
