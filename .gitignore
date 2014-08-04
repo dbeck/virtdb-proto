@@ -24,3 +24,13 @@
 *.pb.cc
 *.pb.h
 *.desc
+
+# gyp generated
+Makefile
+*.target.mk
+*.Makefile
+gyp-mac-tool
+*.xcodeproj
+out/
+Debug/
+
