@@ -46,21 +46,24 @@
     'common_pb_proto':      'common.proto',
     'meta_data_pb_proto':   'meta_data.proto',
     'db_config_pb_proto':   'db_config.proto',
+    'svc_config_pb_proto':  'svc_config.proto',
     'data_pb_proto':        'data.proto',
     'common_pb_desc':       'common.pb.desc',
     'meta_data_pb_desc':    'meta_data.pb.desc',
     'db_config_pb_desc':    'db_config.pb.desc',
+    'svc_config_pb_desc':   'svc_config.pb.desc',
     'data_pb_desc':         'data.pb.desc',
-    'common_pb_srcs':       [ 'common.pb.h',     'common.pb.cc', ],
-    'meta_data_pb_srcs':    [ 'meta_data.pb.h',  'meta_data.pb.cc', ],
-    'db_config_pb_srcs':    [ 'db_config.pb.h',  'db_config.pb.cc', ],
-    'data_pb_srcs':         [ 'data.pb.h',       'data.pb.cc', ],
+    'common_pb_srcs':       [ 'common.pb.h',     'common.pb.cc',     ],
+    'meta_data_pb_srcs':    [ 'meta_data.pb.h',  'meta_data.pb.cc',  ],
+    'db_config_pb_srcs':    [ 'db_config.pb.h',  'db_config.pb.cc',  ],
+    'svc_config_pb_srcs':   [ 'svc_config.pb.h', 'svc_config.pb.cc', ],
+    'data_pb_srcs':         [ 'data.pb.h',       'data.pb.cc',       ],
   },
   'targets' : [
     {
       'target_name':       'proto',
       'type':              'static_library',
-      'sources':           [ 'common.pb.cc', 'meta_data.pb.cc', 'db_config.pb.cc', 'data.pb.cc', ],
+      'sources':           [ 'common.pb.cc', 'meta_data.pb.cc', 'db_config.pb.cc', 'svc_config.pb.cc', 'data.pb.cc', ],
       'actions': [
         {
           'action_name':   'protoc_gen_cpp_common',
@@ -85,7 +88,13 @@
           'inputs':        [ '<(data_pb_proto)', '<@(meta_data_pb_srcs)', '<@(common_pb_srcs)' ],
           'outputs':       [ '<@(data_pb_srcs)', ],
           'action':        [ '<(protoc)', '--cpp_out=.', '-I.', '<(data_pb_proto)', ],
-        }
+        },
+        {
+          'action_name':   'protoc_gen_cpp_svc_config',
+          'inputs':        [ '<(svc_config_pb_proto)', '<@(common_pb_srcs)' ],
+          'outputs':       [ '<@(svc_config_pb_srcs)', ],
+          'action':        [ '<(protoc)', '--cpp_out=.', '-I.', '<(svc_config_pb_proto)', ],
+        },
       ],
     },
     {
@@ -133,6 +142,18 @@
           'inputs':        [ '<(data_pb_proto)', ],
           'outputs':       [ '<(data_pb_desc)', ],
           'action':        [ '<(protoc)', '--descriptor_set_out=<(data_pb_desc)', '--include_imports', '-I.', '<(data_pb_proto)', ],
+        },
+      ],
+    },
+    {
+      'target_name':       'svc_config_pb_desc',
+      'type':              'none',
+      'sources':           [ '<(svc_config_pb_proto)', ],
+      'actions': [ {
+          'action_name':   'protoc_gen_cpp_svc_config',
+          'inputs':        [ '<(svc_config_pb_proto)', ],
+          'outputs':       [ '<(svc_config_pb_desc)', ],
+          'action':        [ '<(protoc)', '--descriptor_set_out=<(svc_config_pb_desc)', '--include_imports', '-I.', '<(svc_config_pb_proto)', ],
         },
       ],
     },

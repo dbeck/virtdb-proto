@@ -13,13 +13,13 @@ message TableMeta {
   repeated KeyValue Properties  = 4;
   message Field {
     required string Name = 1;
-    message FieldType {
-      required Kinds  Kind    = 1;
+    message FieldDesc {
+      required Kind   Type    = 1;
       optional uint32 Length  = 2;
       optional uint32 Scale   = 3;
       optional string Format  = 4;
     }
-    required FieldType  Type        = 2;
+    required FieldDesc  Desc        = 2;
     repeated Comment    Comments    = 3;
     repeated KeyValue   Properties  = 4;
   }
