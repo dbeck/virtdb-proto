@@ -1,6 +1,6 @@
 package virtdb.interface.pb;
 
-enum Kinds {
+enum Kind {
     STRING    = 2;
     INT32     = 3;
     INT64     = 4;
@@ -21,7 +21,7 @@ enum Kinds {
 }
 
 message ValueType {
-    required Kinds     Type          = 1;
+    required Kind      Type          = 1;
     repeated string    StringValue   = 2;
     repeated int32     Int32Value    = 3 [packed=true];
     repeated int64     Int64Value    = 4 [packed=true];

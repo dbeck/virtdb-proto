@@ -1,0 +1,29 @@
+package virtdb.interface.pb;
+import "common.proto";
+
+message Config {
+  required string    Name            = 1;
+  required KeyValue  ConfigData      = 2;
+  optional uint64    ValidForMs      = 3;
+}
+
+enum ServiceType {
+  QUERY            = 1;
+  COLUMN           = 2;
+  META_DATA        = 3;
+  DB_CONFIG        = 4;
+  DB_CONFIG_QUERY  = 5;
+}
+
+message EndpointRequest {
+  required string        Name  = 1;
+  required ServiceType   Type  = 2;
+}
+
+message EndpointReply {
+  required string       Name              = 1;
+  required ServiceType  Type              = 2;
+  repeated string       ConnectionString  = 3;
+  optional uint64       ValidForMs        = 4;
+}
+
