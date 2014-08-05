@@ -7,7 +7,7 @@ PROTO_OBJECTS := $(patsubst %.pb.cc,%.pb.o,$(PROTO_SOURCES))
 PROTO_DESCS := $(patsubst %.pb.cc,%.pb.desc,$(PROTO_SOURCES))
 PROTOBUF_LDFLAGS := $(shell pkg-config --libs protobuf)
 PROTOBUF_CFLAGS := $(shell pkg-config --cflags protobuf)
-GTEST_PATH := $(BUILD_ROOT)/src/gtest
+GTEST_PATH := $(BUILD_ROOT)/gtest
 GTEST_CONFIG_STATUS := $(GTEST_PATH)/config.status
 # FIXME integrate libtool better ...
 GTEST_LIBDIR := $(GTEST_PATH)/lib/.libs/
