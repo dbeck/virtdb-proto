@@ -16,6 +16,8 @@ namespace virtdb { namespace interface {
     is_null(pb::ValueType & pb_vt,
             int index)
     {
+      // TODO
+      return false;
     }
 
     static void
@@ -23,6 +25,7 @@ namespace virtdb { namespace interface {
              int index,
              bool val=true)
     {
+      // TODO
     }
   };
   
@@ -31,7 +34,7 @@ namespace virtdb { namespace interface {
   template <>
   struct value_type<std::string> : public value_type_base
   {
-    static const pb::Kinds kind = pb::Kinds::STRING;
+    static const pb::Kind kind = pb::Kind::STRING;
     typedef std::string stored_type;
 
     template <typename ITER>
@@ -75,7 +78,7 @@ namespace virtdb { namespace interface {
   template <>
   struct value_type<const char *>
   {
-    static const pb::Kinds kind = pb::Kinds::STRING;
+    static const pb::Kind kind = pb::Kind::STRING;
     typedef std::string stored_type;
     
     template <typename ITER>
@@ -119,7 +122,7 @@ namespace virtdb { namespace interface {
   template <>
   struct value_type<int32_t>
   {
-    static const pb::Kinds kind = pb::Kinds::INT32;
+    static const pb::Kind kind = pb::Kind::INT32;
     typedef int32_t stored_type;
     
     template <typename ITER>
@@ -163,7 +166,7 @@ namespace virtdb { namespace interface {
   template <>
   struct value_type<int64_t>
   {
-    static const pb::Kinds kind = pb::Kinds::INT64;
+    static const pb::Kind kind = pb::Kind::INT64;
     typedef int64_t stored_type;
 
     template <typename ITER>
@@ -207,7 +210,7 @@ namespace virtdb { namespace interface {
   template <>
   struct value_type<uint32_t>
   {
-    static const pb::Kinds kind = pb::Kinds::UINT32;
+    static const pb::Kind kind = pb::Kind::UINT32;
     typedef uint32_t stored_type;
 
     template <typename ITER>
@@ -251,7 +254,7 @@ namespace virtdb { namespace interface {
   template <>
   struct value_type<uint64_t>
   {
-    static const pb::Kinds kind = pb::Kinds::UINT64;
+    static const pb::Kind kind = pb::Kind::UINT64;
     typedef uint64_t stored_type;
     
     template <typename ITER>
@@ -295,7 +298,7 @@ namespace virtdb { namespace interface {
   template <>
   struct value_type<double>
   {
-    static const pb::Kinds kind = pb::Kinds::DOUBLE;
+    static const pb::Kind kind = pb::Kind::DOUBLE;
     typedef double stored_type;
 
     template <typename ITER>
@@ -339,7 +342,7 @@ namespace virtdb { namespace interface {
   template <>
   struct value_type<float>
   {
-    static const pb::Kinds kind = pb::Kinds::FLOAT;
+    static const pb::Kind kind = pb::Kind::FLOAT;
     typedef float stored_type;
     
     template <typename ITER>
@@ -383,7 +386,7 @@ namespace virtdb { namespace interface {
   template <>
   struct value_type<bool>
   {
-    static const pb::Kinds kind = pb::Kinds::BOOL;
+    static const pb::Kind kind = pb::Kind::BOOL;
     typedef bool stored_type;
     
     template <typename ITER>

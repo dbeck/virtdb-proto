@@ -24,13 +24,19 @@ FIX_CXX_11_BUG =  -Wl,--no-as-needed
 LINUX_LDFLAGS =  -pthread
 endif
 
-CXXFLAGS += -std=c++11 -fPIC $(FIX_CXX_11_BUG) $(LINUX_LDFLAGS) $(PROTOBUF_CFLAGS) $(GTEST_CFLAGS)
+CXXFLAGS += -std=c++11 -fPIC $(FIX_CXX_11_BUG) $(LINUX_LDFLAGS) $(PROTOBUF_CFLAGS) $(GTEST_CFLAGS) -I$(BUILD_ROOT)/.
 LDFLAGS += $(FIX_CXX_11_BUG) $(LINUX_LDFLAGS) $(PROTOBUF_LDFLAGS) $(GTEST_LDFLAGS)
 
-all: proto-static-lib gtest-pkg-build-all $(PROTO_DESCS)
+TEST_OBJS := test/gtest_main.o test/value_type_test.o
+PROTO_LIB := libproto.a
+
+all: proto-static-lib gtest-test $(PROTO_DESCS) 
+
+gtest-test: gtest-pkg-build-all $(TEST_OBJS) $(PROTO_LIB)
+	g++ -o test/gtest_main $(TEST_OBJS) $(PROTO_LIB) $(LDFLAGS) 
 
 proto-static-lib: $(PROTO_OBJECTS)
-	ar rcs libproto.a $(PROTO_OBJECTS)
+	ar rcs $(PROTO_LIB) $(PROTO_OBJECTS)
 
 gtest-pkg-build-all: gtest-pkg-configure gtest-pkg-lib
 
