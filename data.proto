@@ -1,5 +1,6 @@
 package virtdb.interface.pb;
 import "common.proto";
+import "meta_data.proto";
 
 message Column {
     required string     QueryId    = 1;
@@ -27,11 +28,10 @@ message Expression {
 message Query {
     required string      QueryId     = 1;
     required string      Table       = 2;
-    repeated string      Columns     = 3;
+    repeated Field       Fields      = 3;
     repeated Expression  Filter      = 4;
     optional uint64      Limit       = 5;
     optional string      Schema      = 6;
     optional string      UserToken   = 7;
     optional KeyValue    AccessInfo  = 8;
 }
-

@@ -6,24 +6,26 @@ message Comment {
   optional string Language  = 2;
 }
 
+message FieldDesc {
+  required Kind    Type     = 1;
+  optional uint32  Length   = 2;
+  optional uint32  Scale    = 3;
+  optional string  Format   = 4;
+}
+
+message Field {
+  required string     Name        = 1;
+  required FieldDesc  Desc        = 2;
+  repeated Comment    Comments    = 3;
+  repeated KeyValue   Properties  = 4;
+}
+
 message TableMeta {
-  required string Name          = 1;
-  optional string Schema        = 2;
-  repeated Comment Comments     = 3;
-  repeated KeyValue Properties  = 4;
-  message Field {
-    required string Name = 1;
-    message FieldDesc {
-      required Kind   Type    = 1;
-      optional uint32 Length  = 2;
-      optional uint32 Scale   = 3;
-      optional string Format  = 4;
-    }
-    required FieldDesc  Desc        = 2;
-    repeated Comment    Comments    = 3;
-    repeated KeyValue   Properties  = 4;
-  }
-  repeated Field Fields = 5;
+  required string    Name        = 1;
+  optional string    Schema      = 2;
+  repeated Comment   Comments    = 3;
+  repeated KeyValue  Properties  = 4;
+  repeated Field     Fields      = 5;
 }
 
 message MetaDataRequest {

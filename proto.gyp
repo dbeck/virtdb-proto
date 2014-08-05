@@ -6,6 +6,7 @@
       'Release': { 'defines': ['NDEBUG', 'RELEASE', ], },
     },
     'include_dirs': [ 
+      '<!(pwd)',
       './',
       '/usr/local/include/',
       '/usr/include/',
@@ -26,11 +27,11 @@
     ],
     'conditions': [
       ['OS=="mac"', { 
-        'cflags':                        [ '<!@(pkg-config --cflags protobuf)', '-std=c++11', ], 
+        'cflags':                        [ '<!@(pkg-config --cflags protobuf)', '-std=c++11', '-I<!(pwd)/', ], 
         'xcode_settings':  { 
           'GCC_ENABLE_CPP_EXCEPTIONS':   'YES',
           'OTHER_LDFLAGS':               [ '<!@(pkg-config --libs-only-L --libs-only-l protobuf)' ],
-          'OTHER_CFLAGS':                [ '-std=c++11', ],
+          'OTHER_CFLAGS':                [ '-std=c++11', '-I<!(pwd)/' ],
         },
       },],
       ['OS=="linux"', { 
@@ -123,7 +124,7 @@
       'sources':           [ '<(meta_data_pb_proto)', ],
       'actions': [ {
           'action_name':   'protoc_gen_cpp_meta_data',
-          'inputs':        [ '<(meta_data_pb_proto)', ],
+          'inputs':        [ '<(meta_data_pb_proto)', '<(common_pb_proto)' ],
           'outputs':       [ '<(meta_data_pb_desc)', ],
           'action':        [ '<(protoc)', '--descriptor_set_out=<(meta_data_pb_desc)', '--include_imports', '-I.', '<(meta_data_pb_proto)', ],
         },
@@ -135,7 +136,7 @@
       'sources':           [ '<(db_config_pb_proto)', ],
       'actions': [ {
           'action_name':   'protoc_gen_cpp_db_config',
-          'inputs':        [ '<(db_config_pb_proto)', ],
+          'inputs':        [ '<(db_config_pb_proto)', '<(common_pb_proto)', '<(meta_data_pb_proto)', ],
           'outputs':       [ '<(db_config_pb_desc)', ],
           'action':        [ '<(protoc)', '--descriptor_set_out=<(db_config_pb_desc)', '--include_imports', '-I.', '<(db_config_pb_proto)', ],
         },
@@ -147,7 +148,7 @@
       'sources':           [ '<(data_pb_proto)', ],
       'actions': [ {
           'action_name':   'protoc_gen_cpp_common',
-          'inputs':        [ '<(data_pb_proto)', ],
+          'inputs':        [ '<(data_pb_proto)', '<(common_pb_proto)', '<(meta_data_pb_proto)', ],
           'outputs':       [ '<(data_pb_desc)', ],
           'action':        [ '<(protoc)', '--descriptor_set_out=<(data_pb_desc)', '--include_imports', '-I.', '<(data_pb_proto)', ],
         },
@@ -159,7 +160,7 @@
       'sources':           [ '<(svc_config_pb_proto)', ],
       'actions': [ {
           'action_name':   'protoc_gen_cpp_svc_config',
-          'inputs':        [ '<(svc_config_pb_proto)', ],
+          'inputs':        [ '<(svc_config_pb_proto)', '<(common_pb_proto)' ],
           'outputs':       [ '<(svc_config_pb_desc)', ],
           'action':        [ '<(protoc)', '--descriptor_set_out=<(svc_config_pb_desc)', '--include_imports', '-I.', '<(svc_config_pb_proto)', ],
         },
