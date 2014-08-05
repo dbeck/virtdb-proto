@@ -3,7 +3,6 @@
 #include "common.pb.h"
 #include <string>
 
-// TODO : BytesValue
 // TODO : IsNull
 // TODO : polymorphic getter
 // TODO : set kind-type in set() functions ...

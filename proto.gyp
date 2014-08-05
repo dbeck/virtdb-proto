@@ -26,17 +26,18 @@
     ],
     'conditions': [
       ['OS=="mac"', { 
-        'cflags': [ '<!@(pkg-config --cflags protobuf)', ], 
-        'xcode_settings': { 
-          'GCC_ENABLE_CPP_EXCEPTIONS': 'YES',
-          'OTHER_LDFLAGS': [ '<!@(pkg-config --libs-only-L --libs-only-l protobuf)' ],
+        'cflags':                        [ '<!@(pkg-config --cflags protobuf)', '-std=c++11', ], 
+        'xcode_settings':  { 
+          'GCC_ENABLE_CPP_EXCEPTIONS':   'YES',
+          'OTHER_LDFLAGS':               [ '<!@(pkg-config --libs-only-L --libs-only-l protobuf)' ],
+          'OTHER_CFLAGS':                [ '-std=c++11', ],
         },
       },],
       ['OS=="linux"', { 
-        'cflags': [ '<!@(pkg-config --cflags protobuf)' ], 
+        'cflags':                        [ '<!@(pkg-config --cflags protobuf)' ], 
         'link_settings': {
-          'ldflags': ['-Wl,--no-as-needed',],
-          'libraries': [ '<!@(pkg-config --libs-only-L --libs-only-l protobuf)', ], 
+          'ldflags':                     [ '-Wl,--no-as-needed', ],
+          'libraries':                   [ '<!@(pkg-config --libs-only-L --libs-only-l protobuf)', ], 
         },
       },],
     ],
@@ -96,6 +97,13 @@
           'action':        [ '<(protoc)', '--cpp_out=.', '-I.', '<(svc_config_pb_proto)', ],
         },
       ],
+    },
+    {
+      'target_name':       'gtest_main',
+      'type':              'executable',
+      'dependencies':      [ 'proto', 'gtest/gyp/gtest.gyp:gtest_lib', ],
+      'include_dirs':      [ './gtest/include/', ],
+      'sources':           [ 'test/gtest_main.cc', 'test/value_type_test.cc', ],
     },
     {
       'target_name':       'common_pb_desc',
