@@ -10,10 +10,26 @@
 
 namespace virtdb { namespace interface {
 
-  template <typename T> struct value_type {};
+  struct value_type_base
+  {
+    static bool
+    is_null(pb::ValueType & pb_vt,
+            int index)
+    {
+    }
+
+    static void
+    set_null(pb::ValueType & pb_vt,
+             int index,
+             bool val=true)
+    {
+    }
+  };
   
+  template <typename T> struct value_type {};
+
   template <>
-  struct value_type<std::string>
+  struct value_type<std::string> : public value_type_base
   {
     static const pb::Kinds kind = pb::Kinds::STRING;
     typedef std::string stored_type;
