@@ -19,6 +19,7 @@
 *.exe
 *.out
 *.app
+test/gtest_main
 
 # protocol buffer generated
 *.pb.cc
