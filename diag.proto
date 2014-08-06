@@ -1,7 +1,116 @@
 package virtdb.interface.pb;
 import "common.proto";
 
-message Diag {
-  optional int32 Dummy = 0;
+// symbols are used to minimize the transfer of
+// repeated information, such as hostname, filename and company
+// we do not require the symbol value to be unique across SeqNo's
+// however implementation should do its best to minimize duplicates
+// otherwise this magic makes little sense.
+// SeqNo is a sequnce number expected to be unique within the
+// running application.
+
+message Symbol {
+  required   uint32       SeqNo                = 1;
+  required   string       Value                = 2;
 }
 
+// start-date and time are represented as YYYYMMDD and HHMMSS
+// format decimal numers. their purpose is to give a rough idea
+// about the start time and distinguish betweeen processes together
+// with Pid, Random, and the Symbols. these times are by no means
+// precise timing information
+
+message ProcessInfo {
+  required   uint32       StartDate            = 1;
+  required   uint32       StartTime            = 2;
+  required   uint32       Pid                  = 3;
+  required   uint32       Random               = 4;
+  optional   uint32       NameSymbol           = 5;
+  optional   uint32       HostSymbol           = 6;
+}
+
+// INFO and ERROR are expected to go unfiltered to the log sink.
+// TRACEs can be buffered and discarded and may be sent only when
+// there is a need for diagnosing the application. SIMPLE and SCOPED
+// traces differ in that SCOPED traces go in pairs and show the
+// entry and exit of a given scope, while SIMPLE traces are one-off
+// trace events.
+
+enum LogLevel {
+  INFO          = 1;
+  ERROR         = 2;
+  SIMPLE_TRACE  = 3;
+  SCOPED_TRACE  = 4;
+}
+
+// Log entries are sliced into a sequence of strings or (string=variable)
+// entries. i.e: 'Bad thing happened at' 'time=2000.01.01'
+// This results a few Symbols:
+//   Symbol := (SeqNo=#x, Value='Bad thing happened at')
+//   Symbol := (SeqNo=#x, Value='time')
+// And also a few LogParts:
+//   LogPart := (PartSymbol=#x)
+//   LogPart := (PartSymbol=#y, VariableKind=DATE)
+// Plus one LogData record to store '2000.01.01' value.
+
+message LogPart {
+  required   uint32       PartSymbol           = 1;
+  optional   Kind         VariableKind         = 2;
+}
+
+// LogHeader's purpose is to identify the log location. a static
+// information that is identified by a sequence number. sequence
+// number must be unique in the given process (running application).
+
+message LogHeader {
+  required   uint32       SeqNo                = 1;
+  required   uint32       FileNameSymbol       = 2;
+  required   uint32       LineNumber           = 3;
+  required   uint32       FunctionNameSymbol   = 4;
+  required   LogLevel     Level                = 5;
+  required   uint32       LogStringSymbol      = 6;
+  required   bool         Enabled              = 7;
+  repeated   LogPart      Parts                = 8;
+}
+
+// LogData has the dynamic part of the actual log entry.
+// The static non-changing parts are stored in the LogHeader
+// to minimize the data transfers.
+
+message LogData {
+  required   uint32       HeaderSeqNo          = 1;
+  required   uint64       ElapsedMicroSec      = 2;
+  required   uint64       ThreadId             = 3;
+  repeated   ValueType    Values               = 4;
+  optional   bool         EndScope             = 5;
+}
+
+// LogRecord binds the Symbols, Headers and Data to the
+// actual process. Symbols and Headers are sent at least
+// once, but may be re-sent from time to time (or when
+// asked). Data is the dynamic part of the log message.
+
+message LogRecord {
+  required   ProcessInfo  Process              = 1;
+  repeated   Symbol       Symbols              = 2;
+  repeated   LogHeader    Headers              = 3;
+  repeated   LogData      Data                 = 4;
+}
+
+enum LogCommand {
+  ENABLE_LOG      = 1;
+  DISABLE_LOG     = 2;
+  DUMP_SYMBOLS    = 3;
+  DUMP_HEADERS    = 4;
+  DUMP_TRACES     = 5;
+  LIST_ENABLED    = 6;
+  LIST_DISABLED   = 7;
+}
+
+// If the application supports users may control the
+// log process.
+
+message LogControl {
+  required   LogCommand   Command              = 1;
+  repeated   uint32       HeaderSeqNos         = 2;
+}
