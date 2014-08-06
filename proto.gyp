@@ -49,23 +49,44 @@
     'meta_data_pb_proto':   'meta_data.proto',
     'db_config_pb_proto':   'db_config.proto',
     'svc_config_pb_proto':  'svc_config.proto',
+    'diag_pb_proto':        'diag.proto',
     'data_pb_proto':        'data.proto',
     'common_pb_desc':       'common.pb.desc',
     'meta_data_pb_desc':    'meta_data.pb.desc',
     'db_config_pb_desc':    'db_config.pb.desc',
     'svc_config_pb_desc':   'svc_config.pb.desc',
+    'diag_pb_desc':         'diag.pb.desc',
     'data_pb_desc':         'data.pb.desc',
     'common_pb_srcs':       [ 'common.pb.h',     'common.pb.cc',     ],
     'meta_data_pb_srcs':    [ 'meta_data.pb.h',  'meta_data.pb.cc',  ],
     'db_config_pb_srcs':    [ 'db_config.pb.h',  'db_config.pb.cc',  ],
     'svc_config_pb_srcs':   [ 'svc_config.pb.h', 'svc_config.pb.cc', ],
+    'diag_pb_srcs':         [ 'diag.pb.h',       'diag.pb.cc',       ],
     'data_pb_srcs':         [ 'data.pb.h',       'data.pb.cc',       ],
   },
   'targets' : [
     {
+      'conditions': [
+        ['OS=="mac"', { 
+          'variables':  { 'proto_root':  '<!(pwd)/..', },
+          'direct_dependent_settings': {
+            'defines':            [ 'USING_PROTO_LIB', 'PROTO_MAC_BUILD', ],
+            'include_dirs':       [ '<(proto_root)/', ],
+            'xcode_settings': {
+              'OTHER_CFLAGS':     [ '-std=c++11', ],
+            },
+          },
+        },],
+        ['OS=="linux"', { 
+          'direct_dependent_settings': {
+            'defines':            [ 'USING_PROTO_LIB', 'PROTO_LINUX_BUILD', ],
+            'include_dirs':       [ '.', ],
+          },
+        },],
+      ],
       'target_name':       'proto',
       'type':              'static_library',
-      'sources':           [ 'common.pb.cc', 'meta_data.pb.cc', 'db_config.pb.cc', 'svc_config.pb.cc', 'data.pb.cc', ],
+      'sources':           [ 'common.pb.cc', 'meta_data.pb.cc', 'db_config.pb.cc', 'svc_config.pb.cc', 'diag.pb.cc', 'data.pb.cc', ],
       'actions': [
         {
           'action_name':   'protoc_gen_cpp_common',
@@ -96,6 +117,12 @@
           'inputs':        [ '<(svc_config_pb_proto)', '<@(common_pb_srcs)' ],
           'outputs':       [ '<@(svc_config_pb_srcs)', ],
           'action':        [ '<(protoc)', '--cpp_out=.', '-I.', '<(svc_config_pb_proto)', ],
+        },
+        {
+          'action_name':   'protoc_gen_cpp_diag',
+          'inputs':        [ '<(diag_pb_proto)', '<@(common_pb_srcs)' ],
+          'outputs':       [ '<@(diag_pb_srcs)', ],
+          'action':        [ '<(protoc)', '--cpp_out=.', '-I.', '<(diag_pb_proto)', ],
         },
       ],
     },
@@ -163,6 +190,18 @@
           'inputs':        [ '<(svc_config_pb_proto)', '<(common_pb_proto)' ],
           'outputs':       [ '<(svc_config_pb_desc)', ],
           'action':        [ '<(protoc)', '--descriptor_set_out=<(svc_config_pb_desc)', '--include_imports', '-I.', '<(svc_config_pb_proto)', ],
+        },
+      ],
+    },
+    {
+      'target_name':       'diag_pb_desc',
+      'type':              'none',
+      'sources':           [ '<(diag_pb_proto)', ],
+      'actions': [ {
+          'action_name':   'protoc_gen_cpp_diag',
+          'inputs':        [ '<(diag_pb_proto)', '<(common_pb_proto)' ],
+          'outputs':       [ '<(diag_pb_desc)', ],
+          'action':        [ '<(protoc)', '--descriptor_set_out=<(diag_pb_desc)', '--include_imports', '-I.', '<(diag_pb_proto)', ],
         },
       ],
     },
