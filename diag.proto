@@ -37,10 +37,10 @@ message ProcessInfo {
 // trace events.
 
 enum LogLevel {
-  INFO          = 1;
-  ERROR         = 2;
-  SIMPLE_TRACE  = 3;
-  SCOPED_TRACE  = 4;
+  INFO            = 1;
+  ERROR           = 2;
+  SIMPLE_TRACE    = 3;
+  SCOPED_TRACE    = 4;
 }
 
 // Log entries are sliced into a sequence of strings or (string=variable)
@@ -97,20 +97,20 @@ message LogRecord {
   repeated   LogData      Data                 = 4;
 }
 
-enum LogCommand {
-  ENABLE_LOG      = 1;
-  DISABLE_LOG     = 2;
-  DUMP_SYMBOLS    = 3;
-  DUMP_HEADERS    = 4;
-  DUMP_TRACES     = 5;
-  LIST_ENABLED    = 6;
-  LIST_DISABLED   = 7;
+enum CommandType {
+  ENABLE_LOG       = 1;
+  DISABLE_LOG      = 2;
+  DUMP_SYMBOLS     = 3;
+  DUMP_HEADERS     = 4;
+  DUMP_TRACES      = 5;
+  LIST_ENABLED     = 6;
+  LIST_DISABLED    = 7;
 }
 
 // If the application supports users may control the
 // log process.
 
-message LogControl {
-  required   LogCommand   Command              = 1;
+message LogCommand {
+  required   CommandType  Command              = 1;
   repeated   uint32       HeaderSeqNos         = 2;
 }

@@ -13,6 +13,8 @@ enum ServiceType {
   META_DATA        = 3;
   DB_CONFIG        = 4;
   DB_CONFIG_QUERY  = 5;
+  LOG_RECORD       = 6;
+  LOG_COMMAND      = 7;
 }
 
 message EndpointRequest {
