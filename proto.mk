@@ -1,5 +1,5 @@
 BUILD_ROOT := $(shell pwd)
-PROTO_FILE_NAMES = common.proto meta_data.proto db_config.proto data.proto svc_config.proto
+PROTO_FILE_NAMES = common.proto meta_data.proto db_config.proto data.proto svc_config.proto diag.proto
 PROTO_PATH := $(BUILD_ROOT)/
 PROTO_FILES := $(patsubst %.proto,$(PROTO_PATH)/%.proto,$(PROTO_FILE_NAMES)) 
 PROTO_SOURCES := $(patsubst %.proto,%.pb.cc,$(PROTO_FILES))
@@ -68,11 +68,11 @@ gtest-pkg-clean:
 %.pb.desc: %.proto
 	protoc -I $(PROTO_PATH)/ --descriptor_set_out=$@ --include_imports $<
 
-$(PROTO_PATH)/data.pb.cc: $(PROTO_PATH)/common.pb.cc $(PROTO_PATH)/common.pb.h
+$(PROTO_PATH)/data.pb.cc: $(PROTO_PATH)/common.proto $(PROTO_PATH)/meta_data.proto
 
-$(PROTO_PATH)/meta_data.pb.cc: $(PROTO_PATH)/common.pb.cc $(PROTO_PATH)/common.pb.h
+$(PROTO_PATH)/meta_data.pb.cc: $(PROTO_PATH)/common.proto
 
-$(PROTO_PATH)/db_config.pb.cc: $(PROTO_PATH)/meta_data.pb.cc $(PROTO_PATH)/meta_data.pb.h
+$(PROTO_PATH)/db_config.pb.cc: $(PROTO_PATH)/common.proto $(PROTO_PATH)/meta_data.proto 
 
 $(PROTO_PATH)/svc_config.pb.cc: $(PROTO_PATH)/meta_data.pb.h
 

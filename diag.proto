@@ -1,0 +1,7 @@
+package virtdb.interface.pb;
+import "common.proto";
+
+message Diag {
+  optional int32 Dummy = 0;
+}
+
