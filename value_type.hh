@@ -3,9 +3,7 @@
 #include "common.pb.h"
 #include <string>
 
-// TODO : IsNull
 // TODO : polymorphic getter
-// TODO : set kind-type in set() functions ...
 
 namespace virtdb { namespace interface {
 
@@ -15,8 +13,10 @@ namespace virtdb { namespace interface {
     is_null(pb::ValueType & pb_vt,
             int index)
     {
-      // TODO
-      return false;
+      bool ret = false;
+      if( pb_vt.isnull_size() > index )
+        ret = pb_vt.isnull(index);
+      return ret;
     }
 
     static void
@@ -24,7 +24,10 @@ namespace virtdb { namespace interface {
              int index,
              bool val=true)
     {
-      // TODO
+      // fill the null array up to the
+      for( int i=pb_vt.isnull_size(); i<=index; ++i )
+        pb_vt.add_isnull(false);
+      pb_vt.set_isnull(index, val);
     }
   };
   
@@ -40,8 +43,10 @@ namespace virtdb { namespace interface {
     static void
     set(pb::ValueType & pb_vt,
         ITER begin,
-        ITER end)
+        ITER end,
+        pb::Kind val_kind=kind)
     {
+      pb_vt.set_type(val_kind);
       if( pb_vt.stringvalue_size() )
         pb_vt.clear_stringvalue();
       for( auto it=begin ; it != end ; ++it )
@@ -50,10 +55,11 @@ namespace virtdb { namespace interface {
     
     static void
     set(pb::ValueType & pb_vt,
-        const stored_type & v)
+        const stored_type & v,
+        pb::Kind val_kind=kind)
     {
       const stored_type * val_ptr = &v;
-      set(pb_vt, val_ptr, val_ptr+1);
+      set(pb_vt, val_ptr, val_ptr+1, val_kind);
     }
 
     static int
@@ -75,7 +81,7 @@ namespace virtdb { namespace interface {
   };
   
   template <>
-  struct value_type<const char *>
+  struct value_type<const char *> : public value_type_base
   {
     static const pb::Kind kind = pb::Kind::STRING;
     typedef std::string stored_type;
@@ -84,8 +90,10 @@ namespace virtdb { namespace interface {
     static void
     set(pb::ValueType & pb_vt,
         ITER begin,
-        ITER end)
+        ITER end,
+        pb::Kind val_kind=kind)
     {
+      pb_vt.set_type(val_kind);
       if( pb_vt.stringvalue_size() )
         pb_vt.clear_stringvalue();
       for( auto it=begin ; it != end ; ++it )
@@ -94,10 +102,11 @@ namespace virtdb { namespace interface {
     
     static void
     set(pb::ValueType & pb_vt,
-        const char * v)
+        const char * v,
+        pb::Kind val_kind=kind)
     {
       const char ** val_ptr = &v;
-      set(pb_vt, val_ptr, val_ptr+1);
+      set(pb_vt, val_ptr, val_ptr+1, val_kind);
     }
 
     static int
@@ -119,7 +128,7 @@ namespace virtdb { namespace interface {
   };
   
   template <>
-  struct value_type<int32_t>
+  struct value_type<int32_t> : public value_type_base
   {
     static const pb::Kind kind = pb::Kind::INT32;
     typedef int32_t stored_type;
@@ -128,8 +137,10 @@ namespace virtdb { namespace interface {
     static void
     set(pb::ValueType & pb_vt,
         ITER begin,
-        ITER end)
+        ITER end,
+        pb::Kind val_kind=kind)
     {
+      pb_vt.set_type(val_kind);
       if( pb_vt.int32value_size() )
         pb_vt.clear_int32value();
       for( auto it=begin ; it != end ; ++it )
@@ -138,10 +149,11 @@ namespace virtdb { namespace interface {
     
     static void
     set(pb::ValueType & pb_vt,
-        stored_type v)
+        stored_type v,
+        pb::Kind val_kind=kind)
     {
       const stored_type * val_ptr = &v;
-      set(pb_vt, val_ptr, val_ptr+1);
+      set(pb_vt, val_ptr, val_ptr+1, val_kind);
     }
 
     static int
@@ -163,7 +175,7 @@ namespace virtdb { namespace interface {
   };
   
   template <>
-  struct value_type<int64_t>
+  struct value_type<int64_t> : public value_type_base
   {
     static const pb::Kind kind = pb::Kind::INT64;
     typedef int64_t stored_type;
@@ -172,8 +184,10 @@ namespace virtdb { namespace interface {
     static void
     set(pb::ValueType & pb_vt,
         ITER begin,
-        ITER end)
+        ITER end,
+        pb::Kind val_kind=kind)
     {
+      pb_vt.set_type(val_kind);
       if( pb_vt.int64value_size() )
         pb_vt.clear_int64value();
       for( auto it=begin ; it != end ; ++it )
@@ -182,10 +196,11 @@ namespace virtdb { namespace interface {
     
     static void
     set(pb::ValueType & pb_vt,
-        stored_type v)
+        stored_type v,
+        pb::Kind val_kind=kind)
     {
       const stored_type * val_ptr = &v;
-      set(pb_vt, val_ptr, val_ptr+1);
+      set(pb_vt, val_ptr, val_ptr+1, val_kind);
     }
     
     static int
@@ -207,7 +222,7 @@ namespace virtdb { namespace interface {
   };
   
   template <>
-  struct value_type<uint32_t>
+  struct value_type<uint32_t> : public value_type_base
   {
     static const pb::Kind kind = pb::Kind::UINT32;
     typedef uint32_t stored_type;
@@ -216,8 +231,10 @@ namespace virtdb { namespace interface {
     static void
     set(pb::ValueType & pb_vt,
         ITER begin,
-        ITER end)
+        ITER end,
+        pb::Kind val_kind=kind)
     {
+      pb_vt.set_type(val_kind);
       if( pb_vt.uint32value_size() )
         pb_vt.clear_uint32value();
       for( auto it=begin ; it != end ; ++it )
@@ -226,10 +243,11 @@ namespace virtdb { namespace interface {
     
     static void
     set(pb::ValueType & pb_vt,
-        stored_type v)
+        stored_type v,
+        pb::Kind val_kind=kind)
     {
       const stored_type * val_ptr = &v;
-      set(pb_vt, val_ptr, val_ptr+1);
+      set(pb_vt, val_ptr, val_ptr+1, val_kind);
     }
     
     static int
@@ -251,7 +269,7 @@ namespace virtdb { namespace interface {
   };
   
   template <>
-  struct value_type<uint64_t>
+  struct value_type<uint64_t> : public value_type_base
   {
     static const pb::Kind kind = pb::Kind::UINT64;
     typedef uint64_t stored_type;
@@ -260,8 +278,10 @@ namespace virtdb { namespace interface {
     static void
     set(pb::ValueType & pb_vt,
         ITER begin,
-        ITER end)
+        ITER end,
+        pb::Kind val_kind=kind)
     {
+      pb_vt.set_type(val_kind);
       if( pb_vt.uint64value_size() )
         pb_vt.clear_uint64value();
       for( auto it=begin ; it != end ; ++it )
@@ -270,10 +290,11 @@ namespace virtdb { namespace interface {
     
     static void
     set(pb::ValueType & pb_vt,
-        stored_type v)
+        stored_type v,
+        pb::Kind val_kind=kind)
     {
       const stored_type * val_ptr = &v;
-      set(pb_vt, val_ptr, val_ptr+1);
+      set(pb_vt, val_ptr, val_ptr+1, val_kind);
     }
     
     static int
@@ -295,7 +316,7 @@ namespace virtdb { namespace interface {
   };
   
   template <>
-  struct value_type<double>
+  struct value_type<double> : public value_type_base
   {
     static const pb::Kind kind = pb::Kind::DOUBLE;
     typedef double stored_type;
@@ -304,8 +325,10 @@ namespace virtdb { namespace interface {
     static void
     set(pb::ValueType & pb_vt,
         ITER begin,
-        ITER end)
+        ITER end,
+        pb::Kind val_kind=kind)
     {
+      pb_vt.set_type(val_kind);
       if( pb_vt.doublevalue_size() )
         pb_vt.doublevalue();
       for( auto it=begin ; it != end ; ++it )
@@ -314,10 +337,11 @@ namespace virtdb { namespace interface {
     
     static void
     set(pb::ValueType & pb_vt,
-              stored_type v)
+        stored_type v,
+        pb::Kind val_kind=kind)
     {
       const stored_type * val_ptr = &v;
-      set(pb_vt, val_ptr, val_ptr+1);
+      set(pb_vt, val_ptr, val_ptr+1, val_kind);
     }
     
     static int
@@ -339,7 +363,7 @@ namespace virtdb { namespace interface {
   };
   
   template <>
-  struct value_type<float>
+  struct value_type<float> : public value_type_base
   {
     static const pb::Kind kind = pb::Kind::FLOAT;
     typedef float stored_type;
@@ -348,8 +372,10 @@ namespace virtdb { namespace interface {
     static void
     set(pb::ValueType & pb_vt,
         ITER begin,
-        ITER end)
+        ITER end,
+        pb::Kind val_kind=kind)
     {
+      pb_vt.set_type(val_kind);
       if( pb_vt.floatvalue_size() )
         pb_vt.floatvalue();
       for( auto it=begin ; it != end ; ++it )
@@ -358,10 +384,11 @@ namespace virtdb { namespace interface {
     
     static void
     set(pb::ValueType & pb_vt,
-        stored_type v)
+        stored_type v,
+        pb::Kind val_kind=kind)
     {
       const stored_type * val_ptr = &v;
-      set(pb_vt, val_ptr, val_ptr+1);
+      set(pb_vt, val_ptr, val_ptr+1, val_kind);
     }
     
     static int
@@ -383,7 +410,7 @@ namespace virtdb { namespace interface {
   };
   
   template <>
-  struct value_type<bool>
+  struct value_type<bool> : public value_type_base
   {
     static const pb::Kind kind = pb::Kind::BOOL;
     typedef bool stored_type;
@@ -392,8 +419,10 @@ namespace virtdb { namespace interface {
     static void
     set(pb::ValueType & pb_vt,
         ITER begin,
-        ITER end)
+        ITER end,
+        pb::Kind val_kind=kind)
     {
+      pb_vt.set_type(val_kind);
       if( pb_vt.boolvalue_size() )
         pb_vt.boolvalue();
       for( auto it=begin ; it != end ; ++it )
@@ -402,10 +431,11 @@ namespace virtdb { namespace interface {
     
     static void
     set(pb::ValueType & pb_vt,
-        bool v)
+        bool v,
+        pb::Kind val_kind=kind)
     {
       const bool * val_ptr = &v;
-      set(pb_vt, val_ptr, val_ptr+1);
+      set(pb_vt, val_ptr, val_ptr+1, val_kind);
     }
 
     static int
