@@ -66,6 +66,24 @@
   },
   'targets' : [
     {
+      'conditions': [
+        ['OS=="mac"', { 
+          'variables':  { 'proto_root':  '<!(pwd)/..', },
+          'direct_dependent_settings': {
+            'defines':            [ 'USING_PROTO_LIB', 'PROTO_MAC_BUILD', ],
+            'include_dirs':       [ '<(proto_root)/', ],
+            'xcode_settings': {
+              'OTHER_CFLAGS':     [ '-std=c++11', ],
+            },
+          },
+        },],
+        ['OS=="linux"', { 
+          'direct_dependent_settings': {
+            'defines':            [ 'USING_PROTO_LIB', 'PROTO_LINUX_BUILD', ],
+            'include_dirs':       [ '.', ],
+          },
+        },],
+      ],
       'target_name':       'proto',
       'type':              'static_library',
       'sources':           [ 'common.pb.cc', 'meta_data.pb.cc', 'db_config.pb.cc', 'svc_config.pb.cc', 'diag.pb.cc', 'data.pb.cc', ],
