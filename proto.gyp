@@ -93,8 +93,12 @@
                              'svc_config.pb.cc',
                              'diag.pb.cc',
                              'data.pb.cc',
-                             # support classes
-                             'logger.cc',
+                             # logger support 
+                             'logger.cc', 'logger.hh',  'logger/macros.hh',
+                             'logger/on_return.hh',     'logger/log_record.hh',
+                             'logger/signature.hh',     'logger/end_msg.hh',
+                             'logger/count_items.hh',   'logger/traits.hh',
+                             'logger/variable.hh',
                            ],
       'actions': [
         {
@@ -140,7 +144,13 @@
       'type':              'executable',
       'dependencies':      [ 'proto', 'gtest/gyp/gtest.gyp:gtest_lib', ],
       'include_dirs':      [ './gtest/include/', ],
-      'sources':           [ 'test/gtest_main.cc', 'test/value_type_test.cc', ],
+      'sources':           [
+                             'test/gtest_main.cc',
+                             'test/value_type_test.cc',
+                             'test/value_type_test.hh',
+                             'test/logger_test.cc',
+                             'test/logger_test.hh',
+                           ],
     },
     {
       'target_name':       'common_pb_desc',
