@@ -86,7 +86,16 @@
       ],
       'target_name':       'proto',
       'type':              'static_library',
-      'sources':           [ 'common.pb.cc', 'meta_data.pb.cc', 'db_config.pb.cc', 'svc_config.pb.cc', 'diag.pb.cc', 'data.pb.cc', ],
+      'sources':           [
+                             'common.pb.cc',
+                             'meta_data.pb.cc',
+                             'db_config.pb.cc',
+                             'svc_config.pb.cc',
+                             'diag.pb.cc',
+                             'data.pb.cc',
+                             # support classes
+                             'logger.cc',
+                           ],
       'actions': [
         {
           'action_name':   'protoc_gen_cpp_common',
