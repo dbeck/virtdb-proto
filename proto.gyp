@@ -98,6 +98,7 @@
                              'logger/on_return.hh',     'logger/log_record.hh',
                              'logger/signature.hh',     'logger/end_msg.hh',
                              'logger/count_items.hh',   'logger/traits.hh',
+                             'logger/variable.hh',
                            ],
       'actions': [
         {
