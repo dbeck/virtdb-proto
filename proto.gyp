@@ -93,6 +93,11 @@
                              'svc_config.pb.cc',
                              'diag.pb.cc',
                              'data.pb.cc',
+                             # generic utils
+                             'util.hh',
+                             'util/active_queue.hh',
+                             'util/barrier.cc', 'util/barrier.hh',
+                             'util/exception.hh',
                              # logger support 
                              'logger.cc', 'logger.hh',  'logger/macros.hh',
                              'logger/on_return.hh',     'logger/log_record.hh',
@@ -150,6 +155,8 @@
                              'test/value_type_test.hh',
                              'test/logger_test.cc',
                              'test/logger_test.hh',
+                             'test/util_test.cc',
+                             'test/util_test.hh',
                            ],
     },
     {
