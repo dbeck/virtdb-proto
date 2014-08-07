@@ -37,5 +37,3 @@ message MetaDataRequest {
 message MetaDataReply {
   repeated TableMeta Tables = 1;
 }
-
-
