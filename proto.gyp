@@ -27,18 +27,18 @@
     ],
     'conditions': [
       ['OS=="mac"', { 
-        'cflags':                        [ '<!@(pkg-config --cflags protobuf)', '-std=c++11', '-I<!(pwd)/', ], 
+        'cflags':                        [ '<!@(pkg-config --cflags protobuf libzmq)', '-std=c++11', '-I<!(pwd)/', ],
         'xcode_settings':  { 
           'GCC_ENABLE_CPP_EXCEPTIONS':   'YES',
-          'OTHER_LDFLAGS':               [ '<!@(pkg-config --libs-only-L --libs-only-l protobuf)' ],
+          'OTHER_LDFLAGS':               [ '<!@(pkg-config --libs-only-L --libs-only-l protobuf libzmq)' ],
           'OTHER_CFLAGS':                [ '-std=c++11', '-I<!(pwd)/' ],
         },
       },],
       ['OS=="linux"', { 
-        'cflags':                        [ '<!@(pkg-config --cflags protobuf)' ], 
+        'cflags':                        [ '<!@(pkg-config --cflags protobuf libzmq)' ],
         'link_settings': {
           'ldflags':                     [ '-Wl,--no-as-needed', ],
-          'libraries':                   [ '<!@(pkg-config --libs-only-L --libs-only-l protobuf)', ], 
+          'libraries':                   [ '<!@(pkg-config --libs-only-L --libs-only-l protobuf libzmq)', ],
         },
       },],
     ],
@@ -99,8 +99,9 @@
                              'util/barrier.cc', 'util/barrier.hh',
                              'util/exception.hh',
                              # logger support 
-                             'logger.cc', 'logger.hh',  'logger/macros.hh',
-                             'logger/on_return.hh',     'logger/log_record.hh',
+                             'logger.cc',               'logger.hh',  
+                             'logger/macros.hh',        'logger/on_return.hh',
+                             'logger/log_record.cc',    'logger/log_record.hh',
                              'logger/signature.hh',     'logger/end_msg.hh',
                              'logger/count_items.hh',   'logger/traits.hh',
                              'logger/variable.hh',
