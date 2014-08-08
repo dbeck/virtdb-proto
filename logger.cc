@@ -12,14 +12,14 @@ namespace virtdb { namespace logger {
   log_sink::handle_record(log_sink::pb_logrec_sptr rec)
   {
     // TODO : do something more elegant here ...
-    //  - the bad assumption here is that this acrtive_queue has
+    //  - the bad assumption here is that this active_queue has
     //    only one worker thread, thus we can use the statically
     //    allocated memory for smaller messages (<64 kilobytes)
     //  - this may break when more worker threads will send out
     //    the log messages (if ever...)
     
     static char buffer[65536];
-    if( rec && socket_ && socket_->connected() )
+    if( rec && socket_is_valid() )
     {
       char * work_buffer = buffer;
       
