@@ -43,19 +43,20 @@ enum LogLevel {
   SCOPED_TRACE    = 4;
 }
 
-// Log entries are sliced into a sequence of strings or (string=variable)
+// Log entries are sliced into a sequence of strings, variables or (string=variable)
 // entries. i.e: 'Bad thing happened at' 'time=2000.01.01'
 // This results a few Symbols:
 //   Symbol := (SeqNo=#x, Value='Bad thing happened at')
-//   Symbol := (SeqNo=#x, Value='time')
+//   Symbol := (SeqNo=#y, Value='time')
 // And also a few LogParts:
-//   LogPart := (PartSymbol=#x)
-//   LogPart := (PartSymbol=#y, VariableKind=DATE)
+//   LogPart := (IsVariable=false, Type=STRING, PartSymbol=#x)
+//   LogPart := (IsVariable=true,  Type=DATE,   PartSymbol=#y)
 // Plus one LogData record to store '2000.01.01' value.
 
 message LogPart {
-  required   uint32       PartSymbol           = 1;
-  optional   Kind         VariableKind         = 2;
+  required   bool         IsVariable         = 1;
+  required   Kind         Type               = 2;
+  optional   uint32       PartSymbol         = 3;
 }
 
 // LogHeader's purpose is to identify the log location. a static
@@ -69,8 +70,7 @@ message LogHeader {
   required   uint32       FunctionNameSymbol   = 4;
   required   LogLevel     Level                = 5;
   required   uint32       LogStringSymbol      = 6;
-  required   bool         Enabled              = 7;
-  repeated   LogPart      Parts                = 8;
+  repeated   LogPart      Parts                = 7;
 }
 
 // LogData has the dynamic part of the actual log entry.

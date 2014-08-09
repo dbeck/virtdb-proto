@@ -102,6 +102,8 @@
                              'logger.cc',               'logger.hh',  
                              'logger/macros.hh',        'logger/on_return.hh',
                              'logger/log_record.cc',    'logger/log_record.hh',
+                             'logger/process_info.cc',  'logger/process_info.hh',
+                             'logger/symbol_store.cc',  'logger/symbol_store.hh',
                              'logger/signature.hh',     'logger/end_msg.hh',
                              'logger/count_items.hh',   'logger/traits.hh',
                              'logger/variable.hh',
