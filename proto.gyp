@@ -103,6 +103,7 @@
                              'logger/log_record.cc',    'logger/log_record.hh',
                              'logger/process_info.cc',  'logger/process_info.hh',
                              'logger/symbol_store.cc',  'logger/symbol_store.hh',
+                             'logger/header_store.cc',  'logger/header_store.hh',
                              'logger/log_sink.cc',      'logger/log_sink.hh',
                              'logger/signature.hh',     'logger/end_msg.hh',
                              'logger/count_items.hh',   'logger/traits.hh',
