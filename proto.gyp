@@ -10,7 +10,7 @@
       './',
       '/usr/local/include/',
       '/usr/include/',
-      '<!@(pkg-config --variable=includedir protobuf)',
+      '<!@(pkg-config --variable=includedir protobuf libzmq)',
     ],
     'cflags': [
       '-std=c++11',
