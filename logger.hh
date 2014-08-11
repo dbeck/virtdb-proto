@@ -1,13 +1,7 @@
 #pragma once
 
-#include "diag.pb.h"
-#include "logger/end_msg.hh"
-#include "logger/count_items.hh"
-#include "logger/signature.hh"
-#include "logger/log_record.hh"
 #include "logger/macros.hh"
-#include "logger/on_return.hh"
-#include "logger/variable.hh"
+#include "logger/log_sink.hh"
 
 #define LOG_INFO(MSG) \
   LOG_COMMON_( MSG, \

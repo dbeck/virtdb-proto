@@ -27,18 +27,18 @@
     ],
     'conditions': [
       ['OS=="mac"', { 
-        'cflags':                        [ '<!@(pkg-config --cflags protobuf)', '-std=c++11', '-I<!(pwd)/', ], 
+        'cflags':                        [ '<!@(pkg-config --cflags protobuf libzmq)', '-std=c++11', '-I<!(pwd)/', ],
         'xcode_settings':  { 
           'GCC_ENABLE_CPP_EXCEPTIONS':   'YES',
-          'OTHER_LDFLAGS':               [ '<!@(pkg-config --libs-only-L --libs-only-l protobuf)' ],
+          'OTHER_LDFLAGS':               [ '<!@(pkg-config --libs-only-L --libs-only-l protobuf libzmq)' ],
           'OTHER_CFLAGS':                [ '-std=c++11', '-I<!(pwd)/' ],
         },
       },],
       ['OS=="linux"', { 
-        'cflags':                        [ '<!@(pkg-config --cflags protobuf)' ], 
+        'cflags':                        [ '<!@(pkg-config --cflags protobuf libzmq)' ],
         'link_settings': {
           'ldflags':                     [ '-Wl,--no-as-needed', ],
-          'libraries':                   [ '<!@(pkg-config --libs-only-L --libs-only-l protobuf)', ], 
+          'libraries':                   [ '<!@(pkg-config --libs-only-L --libs-only-l protobuf libzmq)', ],
         },
       },],
     ],
@@ -93,12 +93,22 @@
                              'svc_config.pb.cc',
                              'diag.pb.cc',
                              'data.pb.cc',
+                             # generic utils
+                             'util.hh',
+                             'util/active_queue.hh',
+                             'util/barrier.cc', 'util/barrier.hh',
+                             'util/exception.hh',
+                             'util/value_type.hh', 
                              # logger support 
-                             'logger.cc', 'logger.hh',  'logger/macros.hh',
-                             'logger/on_return.hh',     'logger/log_record.hh',
-                             'logger/signature.hh',     'logger/end_msg.hh',
-                             'logger/count_items.hh',   'logger/traits.hh',
-                             'logger/variable.hh',
+                             'logger.hh',
+                             'logger/macros.hh',        'logger/on_return.hh',
+                             'logger/log_record.cc',    'logger/log_record.hh',
+                             'logger/process_info.cc',  'logger/process_info.hh',
+                             'logger/symbol_store.cc',  'logger/symbol_store.hh',
+                             'logger/header_store.cc',  'logger/header_store.hh',
+                             'logger/log_sink.cc',      'logger/log_sink.hh',
+                             'logger/signature.cc',     'logger/signature.hh',     
+                             'logger/end_msg.hh',       'logger/variable.hh',
                            ],
       'actions': [
         {
@@ -150,6 +160,8 @@
                              'test/value_type_test.hh',
                              'test/logger_test.cc',
                              'test/logger_test.hh',
+                             'test/util_test.cc',
+                             'test/util_test.hh',
                            ],
     },
     {

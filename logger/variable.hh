@@ -1,9 +1,11 @@
 #pragma once
 
 namespace virtdb { namespace logger {
+  
+  struct variable_base {};
 
   template <typename T>
-  struct variable
+  struct variable : public variable_base
   {
     const T     * val_;
     const char  * name_;
@@ -21,4 +23,4 @@ namespace virtdb { namespace logger {
     return variable<T>(_name, _val);
   }
   
-} }
+}}

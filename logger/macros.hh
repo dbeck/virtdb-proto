@@ -1,5 +1,9 @@
 #pragma once
 
+#include "log_record.hh"
+#include "signature.hh"
+#include "on_return.hh"
+
 // build time Defines may override these macros
 // so the user may switch off them induvidually
 
@@ -32,18 +36,14 @@
 #define LOG_INTERNAL_RECORD_SET_1 \
   LOG_INTERNAL_LOCAL_VAR(_log_record_) = &_s_log_record_
 
+// TODO : take care of thread safety
 #define LOG_COMMON_(MSG,LEVEL,ENABLED,SCOPED)                     \
   LOG_INTERNAL_RECORD_DECL_##SCOPED ;                             \
   {                                                               \
     /* the purpose of these static objects is to offload all */   \
     /* possbile log related work from runtime                */   \
                                                                   \
-    /* signature is initialized w/ the item count */              \
-    static virtdb::logger::signature _s_signature(                \
-      virtdb::logger::count_items() <<                            \
-      MSG <<                                                      \
-      virtdb::logger::end_msg()                                   \
-    );                                                            \
+    static virtdb::logger::signature _s_signature;                \
                                                                   \
     /* this static variable handles the log header */             \
     static virtdb::logger::log_record _s_log_record_(             \
@@ -56,6 +56,7 @@
       (                                                           \
         _s_signature << MSG << virtdb::logger::end_msg()          \
       ),                                                          \
+      _s_signature,                                               \
       #MSG                                                        \
     );                                                            \
                                                                   \
