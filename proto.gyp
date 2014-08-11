@@ -10,7 +10,7 @@
       './',
       '/usr/local/include/',
       '/usr/include/',
-      '<!@(pkg-config --variable=includedir protobuf)',
+      '<!@(pkg-config --variable=includedir protobuf libzmq)',
     ],
     'cflags': [
       '-std=c++11',
@@ -96,7 +96,8 @@
                              # generic utils
                              'util.hh',
                              'util/active_queue.hh',
-                             'util/barrier.cc', 'util/barrier.hh',
+                             'util/barrier.cc',         'util/barrier.hh',
+                             'util/relative_time.cc',   'util/relative_time.hh',
                              'util/exception.hh',
                              'util/value_type.hh', 
                              # logger support 
