@@ -1,22 +1,22 @@
 package virtdb.interface.pb;
 import "common.proto";
 
-message Config {
+message Config { // PUB-SUB, PUSH-PULL
   required string    Name            = 1;
   required KeyValue  ConfigData      = 2;
   optional uint64    ValidForMs      = 3;
 }
 
 enum ServiceType {
-  QUERY            = 1;
-  COLUMN           = 2;
-  META_DATA        = 3;
-  DB_CONFIG        = 4;
-  DB_CONFIG_QUERY  = 5;
-  LOG_RECORD       = 6;
-  LOG_COMMAND      = 7;
-  CONFIG           = 8;
-  ENDPOINT         = 9;
+  QUERY            = 1; // PUSH
+  COLUMN           = 2; // PUB-SUB
+  META_DATA        = 3; // REQ-REP, PUB-SUB
+  DB_CONFIG        = 4; // ???
+  DB_CONFIG_QUERY  = 5; // ???
+  LOG_RECORD       = 6; // PUSH
+  LOG_COMMAND      = 7; // REQ-REP
+  CONFIG           = 8; // PUSH, PUB-SUB
+  ENDPOINT         = 9; // REQ-REP, PUB-SUB
 }
 
 enum ConnectionType {
@@ -27,6 +27,7 @@ enum ConnectionType {
 
 // -- config
 // app -> config_svc ( Config ) :   app:PUSH  svc:PULL 
+// gui <- config_svc ( Config ) :   gui:SUB   svc:PUB
 // gui -> config_svc ( Config ) :   gui:PUSH  svc:PULL 
 // app <- config_svc ( Config ) :   app:PULL  svc:PUSH
 
@@ -34,7 +35,7 @@ enum ConnectionType {
 // app <- config_svc ( Endpoint ) : app:REQ   svc:REP  #1! ConfigService, Own endpoints
 // app <- config_svc ( Endpoint ) : app:SUB   svc:PUB
 
-// svc: PULL/Cfg, REP/EP, PUB/EP
+// svc: PUB/Cfg, PULL/Cfg, REP/EP, PUB/EP
 
 // 1, app->config_svc REQ:Endpoint ( 'ME', 'ENDPOINT' ) -> REP:Endpoint ( '*', '*' )
 // 2, app->config_svc PUSH:Config ()
@@ -44,7 +45,7 @@ message Connection {
   repeated string          Address   = 2;
 }
 
-message Endpoint {
+message Endpoint { // REQ-REP, PUB-SUB
   required string           Name          = 1;
   required ServiceType      SvcType       = 2;
   repeated Connection       Connections   = 3;

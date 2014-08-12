@@ -28,12 +28,13 @@ message TableMeta {
   repeated Field     Fields      = 5;
 }
 
-message MetaDataRequest {
+message MetaDataRequest { // REQ
   // both: regexp 
   required string Name    = 1;  
   optional string Schema  = 2; 
 }
 
-message MetaDataReply {
+message MetaData { // REP, PUB-SUB
   repeated TableMeta Tables = 1;
 }
+

@@ -2,7 +2,7 @@ package virtdb.interface.pb;
 import "common.proto";
 import "meta_data.proto";
 
-message Column {
+message Column { // PUB-SUB: channel:QueryId
     required string     QueryId    = 1;
     required string     Name       = 2;
     required ValueType  Data       = 3;
@@ -25,7 +25,7 @@ message Expression {
     optional SimpleExpression     Simple     = 3;
 }
 
-message Query {
+message Query { // PUSH
     required string      QueryId     = 1;
     required string      Table       = 2;
     repeated Field       Fields      = 3;
@@ -35,3 +35,4 @@ message Query {
     optional string      UserToken   = 7;
     optional KeyValue    AccessInfo  = 8;
 }
+
