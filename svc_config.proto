@@ -15,17 +15,38 @@ enum ServiceType {
   DB_CONFIG_QUERY  = 5;
   LOG_RECORD       = 6;
   LOG_COMMAND      = 7;
+  CONFIG           = 8;
+  ENDPOINT         = 9;
 }
 
-message EndpointRequest {
-  required string        Name  = 1;
-  required ServiceType   Type  = 2;
+enum ConnectionType {
+  REQ_REP    = 1;
+  PUSH_PULL  = 2;
+  PUB_SUB    = 3;
 }
 
-message EndpointReply {
-  required string       Name              = 1;
-  required ServiceType  Type              = 2;
-  repeated string       ConnectionString  = 3;
-  optional uint64       ValidForMs        = 4;
+// -- config
+// app -> config_svc ( Config ) :   app:PUSH  svc:PULL 
+// gui -> config_svc ( Config ) :   gui:PUSH  svc:PULL 
+// app <- config_svc ( Config ) :   app:PULL  svc:PUSH
+
+// -- endpoint
+// app <- config_svc ( Endpoint ) : app:REQ   svc:REP  #1! ConfigService, Own endpoints
+// app <- config_svc ( Endpoint ) : app:SUB   svc:PUB
+
+// svc: PULL/Cfg, REP/EP, PUB/EP
+
+// 1, app->config_svc REQ:Endpoint ( 'ME', 'ENDPOINT' ) -> REP:Endpoint ( '*', '*' )
+// 2, app->config_svc PUSH:Config ()
+
+message Connection {
+  required ConnectionType  Type      = 1;
+  repeated string          Address   = 2;
+}
+
+message Endpoint {
+  required string           Name          = 1;
+  required ServiceType      SvcType       = 2;
+  repeated Connection       Connections   = 3;
 }
 
