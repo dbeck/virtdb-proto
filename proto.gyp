@@ -98,8 +98,8 @@
                              'util/active_queue.hh',
                              'util/barrier.cc',         'util/barrier.hh',
                              'util/relative_time.cc',   'util/relative_time.hh',
-                             'util/exception.hh',
-                             'util/value_type.hh', 
+                             'util/exception.hh',       'util/value_type.hh', 
+                             'util/tcp.cc',             'util/tcp.hh',
                              # logger support 
                              'logger.hh',
                              'logger/macros.hh',        'logger/on_return.hh',
