@@ -8,15 +8,15 @@ message Config { // PUB-SUB, PUSH-PULL
 }
 
 enum ServiceType {
-  QUERY            = 1; // PUSH
-  COLUMN           = 2; // PUB-SUB
-  META_DATA        = 3; // REQ-REP, PUB-SUB
-  DB_CONFIG        = 4; // ???
-  DB_CONFIG_QUERY  = 5; // ???
-  LOG_RECORD       = 6; // PUSH
-  LOG_COMMAND      = 7; // REQ-REP
-  CONFIG           = 8; // PUSH, PUB-SUB
-  ENDPOINT         = 9; // REQ-REP, PUB-SUB
+  QUERY            = 1;   // PUSH
+  COLUMN           = 2;   // PUB-SUB
+  META_DATA        = 3;   // REQ-REP, PUB-SUB
+  DB_CONFIG        = 4;   // PUSH
+  DB_CONFIG_QUERY  = 5;   // REQ-REP
+  LOG_RECORD       = 6;   // PUSH
+  LOG_COMMAND      = 7;   // REQ-REP
+  CONFIG           = 8;   // PUSH, PUB-SUB
+  ENDPOINT         = 9;   // REQ-REP, PUB-SUB
 }
 
 enum ConnectionType {
@@ -33,11 +33,14 @@ enum ConnectionType {
 
 // -- endpoint
 // app <- config_svc ( Endpoint ) : app:REQ   svc:REP  #1! ConfigService, Own endpoints
+// app -> config_svc:RAW_UDP -> MyIP
 // app <- config_svc ( Endpoint ) : app:SUB   svc:PUB
 
 // svc: PUB/Cfg, PULL/Cfg, REP/EP, PUB/EP
 
 // 1, app->config_svc REQ:Endpoint ( 'ME', 'ENDPOINT' ) -> REP:Endpoint ( '*', '*' )
+// - a: empty REQ:Endpoint -> REP:Endpoint ( '*', '*' ) + PeerIp
+// - b: own endpoint data  -> REP:Endpoint ( '*', '*' ) + PeerIp
 // 2, app->config_svc PUSH:Config ()
 
 message Connection {
@@ -45,9 +48,14 @@ message Connection {
   repeated string          Address   = 2;
 }
 
-message Endpoint { // REQ-REP, PUB-SUB
+message EndpointData { 
   required string           Name          = 1;
   required ServiceType      SvcType       = 2;
   repeated Connection       Connections   = 3;
+}
+
+message Endpoint { // REQ-REP, PUB-SUB
+  repeated EndpointData  Endpoints = 1;
+  optional string        PeerIp    = 2;
 }
 

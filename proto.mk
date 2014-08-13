@@ -31,21 +31,23 @@ endif
 CXXFLAGS += -std=c++11 -fPIC $(FIX_CXX_11_BUG) $(LINUX_LDFLAGS) $(PROTOBUF_CFLAGS) $(ZMQ_CFLAGS) $(GTEST_CFLAGS) -I$(BUILD_ROOT)/.
 LDFLAGS += $(FIX_CXX_11_BUG) $(LINUX_LDFLAGS) $(PROTOBUF_LDFLAGS) $(ZMQ_LDFLAGS) $(GTEST_LDFLAGS)
 
-UTIL_SRCS       := $(wildcard util/*.cc)
-LOGGER_SRCS     := $(wildcard logger/*.cc)
-TEST_SRCS       := $(wildcard test/*.cc)
+UTIL_SRCS            := $(wildcard util/*.cc)
+LOGGER_SRCS          := $(wildcard logger/*.cc)
+TEST_SRCS_WILDCARD   := $(wildcard test/*.cc)
+TEST_EXCLUDES        := test/netinfo.cc test/gtest_main.cc
+TEST_SRCS            := $(filter-out $(TEST_EXCLUDES),$(TEST_SRCS_WILDCARD))
 
 UTIL_OBJECTS    := $(patsubst %.cc,%.o,$(UTIL_SRCS))
 LOGGER_OBJECTS  := $(patsubst %.cc,%.o,$(LOGGER_SRCS))
 TEST_OBJECTS    := $(patsubst %.cc,%.o,$(TEST_SRCS))
-#$(wildcard test/test/gtest_main.o test/value_type_test.o 
 
 PROTO_LIB := libproto.a
 
 all: proto-static-lib gtest-test $(PROTO_DESCS) 
 
 gtest-test: gtest-pkg-build-all $(UTIL_OBJECTS) $(LOGGER_OBJECTS) $(TEST_OBJECTS) $(PROTO_LIB)
-	g++ -o test/gtest_main $(UTIL_OBJECTS) $(LOGGER_OBJECTS) $(TEST_OBJECTS) $(PROTO_LIB) $(LDFLAGS) 
+	g++ -o test/gtest_main test/gtest_main.o $(UTIL_OBJECTS) $(LOGGER_OBJECTS) $(TEST_OBJECTS) $(PROTO_LIB) $(LDFLAGS) 
+	g++ -o test/netinfo test/netinfo.o $(UTIL_OBJECTS) $(LOGGER_OBJECTS) $(TEST_OBJECTS) $(PROTO_LIB) $(LDFLAGS) 
 
 proto-static-lib: $(PROTO_OBJECTS) $(LOGGER_OBJECTS) $(UTIL_OBJECTS)
 	ar rcs $(PROTO_LIB) $(LOGGER_OBJECTS) $(PROTO_OBJECTS) $(UTIL_OBJECTS)
