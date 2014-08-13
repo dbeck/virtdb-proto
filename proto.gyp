@@ -99,7 +99,7 @@
                              'util/barrier.cc',         'util/barrier.hh',
                              'util/relative_time.cc',   'util/relative_time.hh',
                              'util/exception.hh',       'util/value_type.hh', 
-                             'util/tcp.cc',             'util/tcp.hh',
+                             'util/net.cc',             'util/net.hh',
                              # logger support 
                              'logger.hh',
                              'logger/macros.hh',        'logger/on_return.hh',
@@ -163,6 +163,15 @@
                              'test/logger_test.hh',
                              'test/util_test.cc',
                              'test/util_test.hh',
+                           ],
+    },
+    {
+      'target_name':       'netinfo',
+      'type':              'executable',
+      'dependencies':      [ 'proto', ],
+      'include_dirs':      [ './', ],
+      'sources':           [
+                             'test/netinfo.cc',
                            ],
     },
     {
