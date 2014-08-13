@@ -45,7 +45,7 @@ PROTO_LIB := libproto.a
 
 all: proto-static-lib gtest-test $(PROTO_DESCS) 
 
-gtest-test: gtest-pkg-build-all $(UTIL_OBJECTS) $(LOGGER_OBJECTS) $(TEST_OBJECTS) $(PROTO_LIB)
+gtest-test: gtest-pkg-build-all test/gtest_main.o test/netinfo.o $(UTIL_OBJECTS) $(LOGGER_OBJECTS) $(TEST_OBJECTS) $(PROTO_LIB)
 	g++ -o test/gtest_main test/gtest_main.o $(UTIL_OBJECTS) $(LOGGER_OBJECTS) $(TEST_OBJECTS) $(PROTO_LIB) $(LDFLAGS) 
 	g++ -o test/netinfo test/netinfo.o $(UTIL_OBJECTS) $(LOGGER_OBJECTS) $(TEST_OBJECTS) $(PROTO_LIB) $(LDFLAGS) 
 
