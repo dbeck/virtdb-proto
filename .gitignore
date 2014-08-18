@@ -3,6 +3,7 @@
 *.lo
 *.o
 *.obj
+*.d
 
 # Compiled Dynamic libraries
 *.so
@@ -35,4 +36,3 @@ gyp-mac-tool
 *.xcodeproj
 out/
 Debug/
-
