@@ -1,7 +1,7 @@
 [submodule "src/gtest"]
 	path = gtest
-	url = https://github.com/starschema/virtdb-gtest.git
+	url = git@github.com:starschema/virtdb-gtest.git
 	branch = gtest-1.7.0
 [submodule "cppzmq"]
 	path = cppzmq
-	url = https://github.com/starschema/cppzmq.git
+	url = git@github.com:starschema/cppzmq.git
