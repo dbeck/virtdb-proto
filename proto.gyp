@@ -111,6 +111,7 @@
                              'logger/signature.cc',     'logger/signature.hh',     
                              'logger/end_msg.hh',       'logger/variable.hh',
                              # connector helpers
+                             'connector.hh',
                              'connector/column_client.cc',        'connector/column_client.hh',
                              'connector/column_server.cc',        'connector/column_server.hh',
                              'connector/config_client.cc',        'connector/config_client.hh',
