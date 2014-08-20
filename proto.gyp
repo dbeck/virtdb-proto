@@ -101,7 +101,8 @@
                              'util/relative_time.cc',    'util/relative_time.hh',
                              'util/exception.hh',        'util/value_type.hh', 
                              'util/net.cc',              'util/net.hh',
-                             'util/compare_messages.hh', 
+                             'util/async_worker.cc',     'util/async_worker.hh',
+                             'util/compare_messages.hh',
                              # logger support 
                              'logger.hh',
                              'logger/macros.hh',        'logger/on_return.hh',
