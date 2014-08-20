@@ -8,6 +8,7 @@ message Config { // PUB-SUB, PUSH-PULL
 }
 
 enum ServiceType {
+  NONE             = 0;   // 
   QUERY            = 1;   // PUSH
   COLUMN           = 2;   // PUB-SUB
   META_DATA        = 3;   // REQ-REP, PUB-SUB

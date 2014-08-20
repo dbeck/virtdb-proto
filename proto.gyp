@@ -8,6 +8,7 @@
     'include_dirs': [ 
       '<!(pwd)',
       './',
+      './cppzmq/',
       '/usr/local/include/',
       '/usr/include/',
       '<!@(pkg-config --variable=includedir protobuf libzmq)',
@@ -31,7 +32,7 @@
         'xcode_settings':  { 
           'GCC_ENABLE_CPP_EXCEPTIONS':   'YES',
           'OTHER_LDFLAGS':               [ '<!@(pkg-config --libs-only-L --libs-only-l protobuf libzmq)' ],
-          'OTHER_CFLAGS':                [ '-std=c++11', '-I<!(pwd)/' ],
+          'OTHER_CFLAGS':                [ '-std=c++11', '-I<!(pwd)/', '-I<!(pwd)/cppzmq/' ],
         },
       },],
       ['OS=="linux"', { 
@@ -95,11 +96,12 @@
                              'data.pb.cc',
                              # generic utils
                              'util.hh',
-                             'util/active_queue.hh',
-                             'util/barrier.cc',         'util/barrier.hh',
-                             'util/relative_time.cc',   'util/relative_time.hh',
-                             'util/exception.hh',       'util/value_type.hh', 
-                             'util/net.cc',             'util/net.hh',
+                             'util/active_queue.hh',     'util/flex_alloc.hh',
+                             'util/barrier.cc',          'util/barrier.hh',
+                             'util/relative_time.cc',    'util/relative_time.hh',
+                             'util/exception.hh',        'util/value_type.hh', 
+                             'util/net.cc',              'util/net.hh',
+                             'util/compare_messages.hh', 
                              # logger support 
                              'logger.hh',
                              'logger/macros.hh',        'logger/on_return.hh',
