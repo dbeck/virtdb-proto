@@ -1,9 +1,9 @@
 package virtdb.interface.pb;
 import "common.proto";
 
-message Config { // PUB-SUB, PUSH-PULL
+message Config { // PUB-SUB, PUSH-PULL // ??? REQ-REP, PUB-SUB
   required string    Name            = 1;
-  required KeyValue  ConfigData      = 2;
+  optional KeyValue  ConfigData      = 2;
   optional uint64    ValidForMs      = 3;
 }
 
@@ -16,7 +16,7 @@ enum ServiceType {
   DB_CONFIG_QUERY  = 5;   // REQ-REP
   LOG_RECORD       = 6;   // PUSH
   LOG_COMMAND      = 7;   // REQ-REP
-  CONFIG           = 8;   // PUSH, PUB-SUB
+  CONFIG           = 8;   // PUSH, PUB-SUB // ??? REQ-REP, PUB-SUB
   ENDPOINT         = 9;   // REQ-REP, PUB-SUB
   IP_DISCOVERY     = 10;  // RAW_UDP
 }
@@ -27,26 +27,6 @@ enum ConnectionType {
   PUB_SUB    = 3;
   RAW_UDP    = 4;
 }
-
-// -- config
-// app -> config_svc ( Config ) :   app:PUSH  svc:PULL 
-// gui <- config_svc ( Config ) :   gui:SUB   svc:PUB
-// gui -> config_svc ( Config ) :   gui:PUSH  svc:PULL 
-// app <- config_svc ( Config ) :   app:PULL  svc:PUSH
-
-// -- endpoint
-// app <- config_svc ( Endpoint ) : app:REQ   svc:REP  #1! ConfigService, Own endpoints
-// app -> config_svc:RAW_UDP -> MyIP
-// app <- config_svc ( Endpoint ) : app:SUB   svc:PUB
-
-// svc: PUB/Cfg, PULL/Cfg, REP/EP, PUB/EP
-
-// 1, app->config_svc REQ:Endpoint ( 'ME', 'ENDPOINT' ) -> REP:Endpoint ( '*', '*' )
-// - a: empty REQ:Endpoint -> REP:Endpoint ( '*', '*' ) 
-//   - must return at least one IP_DISCOVERY endpoint
-// - b: UDP discovery "Name" -> "fe80::52e5:49ff:fef8:dbc6" or "192.168.1.1"
-// - c: own endpoint data  -> REP:Endpoint ( '*', '*' )
-// 2, app->config_svc PUSH:Config ()
 
 message Connection {
   required ConnectionType  Type      = 1;
