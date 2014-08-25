@@ -1,7 +1,7 @@
 package virtdb.interface.pb;
 import "common.proto";
 
-message Config { // PUB-SUB, PUSH-PULL // ??? REQ-REP, PUB-SUB
+message Config { // REQ-REP, PUB-SUB
   required string    Name            = 1;
   optional KeyValue  ConfigData      = 2;
   optional uint64    ValidForMs      = 3;
@@ -16,7 +16,7 @@ enum ServiceType {
   DB_CONFIG_QUERY  = 5;   // REQ-REP
   LOG_RECORD       = 6;   // PUSH
   LOG_COMMAND      = 7;   // REQ-REP
-  CONFIG           = 8;   // PUSH, PUB-SUB // ??? REQ-REP, PUB-SUB
+  CONFIG           = 8;   // REQ-REP, PUB-SUB
   ENDPOINT         = 9;   // REQ-REP, PUB-SUB
   IP_DISCOVERY     = 10;  // RAW_UDP
 }
