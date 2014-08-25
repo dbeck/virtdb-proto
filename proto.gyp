@@ -94,37 +94,85 @@
                              '<@(diag_pb_srcs)',
                              '<@(data_pb_srcs)',
                            ],
-      'actions': [
+      'dependencies':      [
+                             'common_pb_cpp',
+                             'meta_data_pb_cpp',
+                             'db_config_pb_cpp',
+                             'svc_config_pb_cpp',
+                             'diag_pb_cpp',
+                             'data_pb_cpp',
+                           ],
+    },
+    {
+      'target_name':       'common_pb_cpp',
+      'type':              'none',
+      'sources':           [ '<(common_pb_proto)', ],
+      'actions': [ 
         {
           'action_name':   'protoc_gen_cpp_common',
           'inputs':        [ '<(common_pb_proto)', ],
           'outputs':       [ '<@(common_pb_srcs)', ], 
           'action':        [ '<(protoc)', '--cpp_out=.', '-I.', '<(common_pb_proto)', ],
         },
+      ],
+    },
+    {
+      'target_name':       'meta_data_pb_cpp',
+      'type':              'none',
+      'sources':           [ '<(meta_data_pb_proto)', ],
+      'actions': [ 
         {
           'action_name':   'protoc_gen_cpp_meta_data',
           'inputs':        [ '<(meta_data_pb_proto)', '<@(common_pb_srcs)', ],
           'outputs':       [ '<@(meta_data_pb_srcs)', ],
           'action':        [ '<(protoc)', '--cpp_out=.', '-I.', '<(meta_data_pb_proto)', ],
         },
+      ],
+    },
+    {
+      'target_name':       'db_config_pb_cpp',
+      'type':              'none',
+      'sources':           [ '<(db_config_pb_proto)', ],
+      'actions': [ 
         {
           'action_name':   'protoc_gen_cpp_db_config',
           'inputs':        [ '<(db_config_pb_proto)', '<@(meta_data_pb_srcs)', '<@(common_pb_srcs)' ],
           'outputs':       [ '<@(db_config_pb_srcs)', ],
           'action':        [ '<(protoc)', '--cpp_out=.', '-I.', '<(db_config_pb_proto)', ],
         },
+      ],
+    },
+    {
+      'target_name':       'data_pb_cpp',
+      'type':              'none',
+      'sources':           [ '<(data_pb_proto)', ],
+      'actions': [ 
         {
           'action_name':   'protoc_gen_cpp_data',
           'inputs':        [ '<(data_pb_proto)', '<@(meta_data_pb_srcs)', '<@(common_pb_srcs)' ],
           'outputs':       [ '<@(data_pb_srcs)', ],
           'action':        [ '<(protoc)', '--cpp_out=.', '-I.', '<(data_pb_proto)', ],
         },
+      ],
+    },
+    {
+      'target_name':       'svc_config_pb_cpp',
+      'type':              'none',
+      'sources':           [ '<(svc_config_pb_proto)', ],
+      'actions': [ 
         {
           'action_name':   'protoc_gen_cpp_svc_config',
           'inputs':        [ '<(svc_config_pb_proto)', '<@(common_pb_srcs)' ],
           'outputs':       [ '<@(svc_config_pb_srcs)', ],
           'action':        [ '<(protoc)', '--cpp_out=.', '-I.', '<(svc_config_pb_proto)', ],
         },
+      ],
+    },
+    {
+      'target_name':       'diag_pb_cpp',
+      'type':              'none',
+      'sources':           [ '<(diag_pb_proto)', ],
+      'actions': [ 
         {
           'action_name':   'protoc_gen_cpp_diag',
           'inputs':        [ '<(diag_pb_proto)', '<@(common_pb_srcs)' ],
