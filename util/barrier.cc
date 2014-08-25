@@ -40,6 +40,25 @@ barrier::wait()
     if( nwaiting_ >= nthreads_ )
       return;
     
-    cond_.wait(l,[this]{ return (nwaiting_ >= nthreads_); });
+    // doing this in a timed loop, so we don't rely on notifications alone
+    cond_.wait_for(l,
+                   std::chrono::milliseconds(5000),
+                   [this] { return (nwaiting_ >= nthreads_); }
+                   );
   }
 }
+
+bool
+barrier::ready()
+{
+  lock l(mutex_);
+  return (nwaiting_ >= nthreads_);
+}
+
+void
+barrier::reset()
+{
+  lock l(mutex_);
+  nwaiting_ = 0;
+}
+
