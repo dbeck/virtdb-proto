@@ -91,28 +91,14 @@ message LogData {
 // once, but may be re-sent from time to time (or when
 // asked). Data is the dynamic part of the log message.
 
-message LogRecord { // PUSH
+message LogRecord { // PUSH, PUB-SUB
   required   ProcessInfo  Process              = 1;
   repeated   Symbol       Symbols              = 2;
   repeated   LogHeader    Headers              = 3;
   repeated   LogData      Data                 = 4;
 }
 
-enum CommandType {
-  ENABLE_LOG       = 1;
-  DISABLE_LOG      = 2;
-  DUMP_SYMBOLS     = 3;
-  DUMP_HEADERS     = 4;
-  DUMP_TRACES      = 5;
-  LIST_ENABLED     = 6;
-  LIST_DISABLED    = 7;
+message GetLogs { // REQ-REP
+  optional   uint64       MicroSecRange        = 1;
+  repeated   LogLevel     Levels               = 2;
 }
-
-// If the application supports users may control the
-// log process.
-
-message LogCommand { // REQ-REP
-  required   CommandType  Command              = 1;
-  repeated   uint32       HeaderSeqNos         = 2;
-}
-
