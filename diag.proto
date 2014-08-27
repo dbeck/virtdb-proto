@@ -84,6 +84,7 @@ message LogData {
   required   uint64       ThreadId             = 3;
   repeated   ValueType    Values               = 4;
   optional   bool         EndScope             = 5;
+  optional   uint64       ReceivedAtMicroSec   = 6;
 }
 
 // LogRecord binds the Symbols, Headers and Data to the
