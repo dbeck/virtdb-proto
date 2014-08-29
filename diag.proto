@@ -56,8 +56,7 @@ enum LogLevel {
 message LogPart {
   required   bool         IsVariable         = 1;
   required   bool         HasData            = 2;
-  required   Kind         Type               = 3;
-  optional   uint32       PartSymbol         = 4;
+  optional   uint32       PartSymbol         = 3;
 }
 
 // LogHeader's purpose is to identify the log location. a static
