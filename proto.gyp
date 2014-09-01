@@ -8,10 +8,9 @@
     'include_dirs': [ 
       '<!(pwd)',
       './',
-      './cppzmq/',
       '/usr/local/include/',
       '/usr/include/',
-      '<!@(pkg-config --variable=includedir protobuf libzmq)',
+      '<!@(pkg-config --variable=includedir protobuf)',
     ],
     'cflags': [
       '-std=c++11',
@@ -28,18 +27,18 @@
     ],
     'conditions': [
       ['OS=="mac"', { 
-        'cflags':                        [ '<!@(pkg-config --cflags protobuf libzmq)', '-std=c++11', '-I<!(pwd)/', ],
+        'cflags':                        [ '<!@(pkg-config --cflags protobuf)', '-std=c++11', '-I<!(pwd)/', ],
         'xcode_settings':  { 
           'GCC_ENABLE_CPP_EXCEPTIONS':   'YES',
-          'OTHER_LDFLAGS':               [ '<!@(pkg-config --libs-only-L --libs-only-l protobuf libzmq)' ],
+          'OTHER_LDFLAGS':               [ '<!@(pkg-config --libs-only-L --libs-only-l protobuf)' ],
           'OTHER_CFLAGS':                [ '-std=c++11', '-I<!(pwd)/', '-I<!(pwd)/cppzmq/' ],
         },
       },],
       ['OS=="linux"', { 
-        'cflags':                        [ '<!@(pkg-config --cflags protobuf libzmq)' ],
+        'cflags':                        [ '<!@(pkg-config --cflags protobuf)' ],
         'link_settings': {
           'ldflags':                     [ '-Wl,--no-as-needed', ],
-          'libraries':                   [ '<!@(pkg-config --libs-only-L --libs-only-l protobuf libzmq)', ],
+          'libraries':                   [ '<!@(pkg-config --libs-only-L --libs-only-l protobuf)', ],
         },
       },],
     ],
@@ -88,82 +87,92 @@
       'target_name':       'proto',
       'type':              'static_library',
       'sources':           [
-                             'common.pb.cc',
-                             'meta_data.pb.cc',
-                             'db_config.pb.cc',
-                             'svc_config.pb.cc',
-                             'diag.pb.cc',
-                             'data.pb.cc',
-                             # generic utils
-                             'util.hh',
-                             'util/active_queue.hh',     'util/flex_alloc.hh',
-                             'util/barrier.cc',          'util/barrier.hh',
-                             'util/relative_time.cc',    'util/relative_time.hh',
-                             'util/exception.hh',        'util/value_type.hh', 
-                             'util/net.cc',              'util/net.hh',
-                             'util/zmq_utils.cc',        'util/zmq_utils.hh',
-                             'util/async_worker.cc',     'util/async_worker.hh',
-                             'util/compare_messages.hh',
-                             # logger support 
-                             'logger.hh',
-                             'logger/macros.hh',        'logger/on_return.hh',
-                             'logger/log_record.cc',    'logger/log_record.hh',
-                             'logger/process_info.cc',  'logger/process_info.hh',
-                             'logger/symbol_store.cc',  'logger/symbol_store.hh',
-                             'logger/header_store.cc',  'logger/header_store.hh',
-                             'logger/log_sink.cc',      'logger/log_sink.hh',
-                             'logger/signature.cc',     'logger/signature.hh',     
-                             'logger/end_msg.hh',       'logger/variable.hh',
-                             # connector helpers
-                             'connector.hh',
-                             'connector/column_client.cc',        'connector/column_client.hh',
-                             'connector/column_server.cc',        'connector/column_server.hh',
-                             'connector/config_client.cc',        'connector/config_client.hh',
-                             'connector/config_server.cc',        'connector/config_server.hh',
-                             'connector/db_config_client.cc',     'connector/db_config_client.hh',
-                             'connector/db_config_server.cc',     'connector/db_config_server.hh',
-                             'connector/endpoint_client.cc',      'connector/endpoint_client.hh',
-                             'connector/endpoint_server.cc',      'connector/endpoint_server.hh',
-                             'connector/ip_discovery_client.cc',  'connector/ip_discovery_client.hh', 
-                             'connector/ip_discovery_server.cc',  'connector/ip_discovery_server.hh',
-                             'connector/log_record_client.cc',    'connector/log_record_client.hh',
-                             'connector/log_record_server.cc',    'connector/log_record_server.hh',
-                             'connector/meta_data_client.cc',     'connector/meta_data_client.hh',
-                             'connector/meta_data_server.cc',     'connector/meta_data_server.hh',
-                             'connector/query_client.cc',         'connector/query_client.hh',
-                             'connector/query_server.cc',         'connector/query_server.hh',
+                             '<@(common_pb_srcs)',
+                             '<@(meta_data_pb_srcs)',
+                             '<@(db_config_pb_srcs)',
+                             '<@(svc_config_pb_srcs)',
+                             '<@(diag_pb_srcs)',
+                             '<@(data_pb_srcs)',
                            ],
-      'actions': [
+      'dependencies':      [
+                             'common_pb_cpp',
+                             'meta_data_pb_cpp',
+                             'db_config_pb_cpp',
+                             'svc_config_pb_cpp',
+                             'diag_pb_cpp',
+                             'data_pb_cpp',
+                           ],
+    },
+    {
+      'target_name':       'common_pb_cpp',
+      'type':              'none',
+      'sources':           [ '<(common_pb_proto)', ],
+      'actions': [ 
         {
           'action_name':   'protoc_gen_cpp_common',
           'inputs':        [ '<(common_pb_proto)', ],
           'outputs':       [ '<@(common_pb_srcs)', ], 
           'action':        [ '<(protoc)', '--cpp_out=.', '-I.', '<(common_pb_proto)', ],
         },
+      ],
+    },
+    {
+      'target_name':       'meta_data_pb_cpp',
+      'type':              'none',
+      'sources':           [ '<(meta_data_pb_proto)', ],
+      'actions': [ 
         {
           'action_name':   'protoc_gen_cpp_meta_data',
           'inputs':        [ '<(meta_data_pb_proto)', '<@(common_pb_srcs)', ],
           'outputs':       [ '<@(meta_data_pb_srcs)', ],
           'action':        [ '<(protoc)', '--cpp_out=.', '-I.', '<(meta_data_pb_proto)', ],
         },
+      ],
+    },
+    {
+      'target_name':       'db_config_pb_cpp',
+      'type':              'none',
+      'sources':           [ '<(db_config_pb_proto)', ],
+      'actions': [ 
         {
           'action_name':   'protoc_gen_cpp_db_config',
           'inputs':        [ '<(db_config_pb_proto)', '<@(meta_data_pb_srcs)', '<@(common_pb_srcs)' ],
           'outputs':       [ '<@(db_config_pb_srcs)', ],
           'action':        [ '<(protoc)', '--cpp_out=.', '-I.', '<(db_config_pb_proto)', ],
         },
+      ],
+    },
+    {
+      'target_name':       'data_pb_cpp',
+      'type':              'none',
+      'sources':           [ '<(data_pb_proto)', ],
+      'actions': [ 
         {
           'action_name':   'protoc_gen_cpp_data',
           'inputs':        [ '<(data_pb_proto)', '<@(meta_data_pb_srcs)', '<@(common_pb_srcs)' ],
           'outputs':       [ '<@(data_pb_srcs)', ],
           'action':        [ '<(protoc)', '--cpp_out=.', '-I.', '<(data_pb_proto)', ],
         },
+      ],
+    },
+    {
+      'target_name':       'svc_config_pb_cpp',
+      'type':              'none',
+      'sources':           [ '<(svc_config_pb_proto)', ],
+      'actions': [ 
         {
           'action_name':   'protoc_gen_cpp_svc_config',
           'inputs':        [ '<(svc_config_pb_proto)', '<@(common_pb_srcs)' ],
           'outputs':       [ '<@(svc_config_pb_srcs)', ],
           'action':        [ '<(protoc)', '--cpp_out=.', '-I.', '<(svc_config_pb_proto)', ],
         },
+      ],
+    },
+    {
+      'target_name':       'diag_pb_cpp',
+      'type':              'none',
+      'sources':           [ '<(diag_pb_proto)', ],
+      'actions': [ 
         {
           'action_name':   'protoc_gen_cpp_diag',
           'inputs':        [ '<(diag_pb_proto)', '<@(common_pb_srcs)' ],
@@ -171,28 +180,6 @@
           'action':        [ '<(protoc)', '--cpp_out=.', '-I.', '<(diag_pb_proto)', ],
         },
       ],
-    },
-    {
-      'target_name':       'gtest_main',
-      'type':              'executable',
-      'dependencies':      [ 'proto', 'gtest/gyp/gtest.gyp:gtest_lib', ],
-      'include_dirs':      [ './gtest/include/', ],
-      'sources':           [
-                             'test/gtest_main.cc',
-                             'test/value_type_test.cc',   'test/value_type_test.hh',
-                             'test/logger_test.cc',       'test/logger_test.hh',
-                             'test/util_test.cc',         'test/util_test.hh',
-                             'test/connector_test.cc',    'test/connector_test.hh',
-                           ],
-    },
-    {
-      'target_name':       'netinfo',
-      'type':              'executable',
-      'dependencies':      [ 'proto', ],
-      'include_dirs':      [ './', ],
-      'sources':           [
-                             'test/netinfo.cc',
-                           ],
     },
     {
       'target_name':       'common_pb_desc',

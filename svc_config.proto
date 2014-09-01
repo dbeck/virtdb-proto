@@ -14,8 +14,8 @@ enum ServiceType {
   META_DATA        = 3;   // REQ-REP, PUB-SUB
   DB_CONFIG        = 4;   // PUSH
   DB_CONFIG_QUERY  = 5;   // REQ-REP
-  LOG_RECORD       = 6;   // PUSH
-  LOG_COMMAND      = 7;   // REQ-REP
+  LOG_RECORD       = 6;   // PUSH, PUB-SUB
+  GET_LOGS         = 7;   // REQ-REP
   CONFIG           = 8;   // REQ-REP, PUB-SUB
   ENDPOINT         = 9;   // REQ-REP, PUB-SUB
   IP_DISCOVERY     = 10;  // RAW_UDP

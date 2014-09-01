@@ -6,7 +6,8 @@ message Column { // PUB-SUB: channel:QueryId
     required string     QueryId    = 1;
     required string     Name       = 2;
     required ValueType  Data       = 3;
-    optional bool       EndOfData  = 4;
+    required uint64     SeqNo      = 4;
+    optional bool       EndOfData  = 5;
 }
 
 message SimpleExpression {
