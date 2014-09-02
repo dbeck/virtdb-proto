@@ -1,7 +1,7 @@
 package virtdb.interface.pb;
 import "common.proto";
 
-message Config { // REQ-REP, PUB-SUB
+message Config { // REQ-REP, PUB-SUB channel: "Name"
   required string    Name            = 1;
   optional KeyValue  ConfigData      = 2;
   optional uint64    ValidForMs      = 3;
@@ -39,7 +39,7 @@ message EndpointData {
   repeated Connection       Connections   = 3;
 }
 
-message Endpoint { // REQ-REP, PUB-SUB
+message Endpoint { // REQ-REP, PUB-SUB channel: "#ServiceType EndpointName"
   repeated EndpointData  Endpoints = 1;
 }
 

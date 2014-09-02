@@ -30,11 +30,12 @@ message TableMeta {
 
 message MetaDataRequest { // REQ
   // both: regexp 
-  required string Name    = 1;  
-  optional string Schema  = 2; 
+  required string  Name        = 1;  
+  optional string  Schema      = 2; 
+  required bool    WithFields  = 3;
 }
 
-message MetaData { // REP, PUB-SUB
+message MetaData { // REP, PUB-SUB channel: "ProviderName Schema Table"
   repeated TableMeta Tables = 1;
 }
 
