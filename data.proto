@@ -35,5 +35,8 @@ message Query { // PUSH
     optional string      Schema      = 6;
     optional string      UserToken   = 7;
     optional KeyValue    AccessInfo  = 8;
+    // max-chunk-size
+    // stop-query
+    // resend column+seqno
 }
 
