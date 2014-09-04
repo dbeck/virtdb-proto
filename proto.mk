@@ -7,6 +7,18 @@ PROTO_OBJECTS        := $(patsubst %.pb.cc,%.pb.o,$(PROTO_SOURCES))
 PROTO_DESCS          := $(patsubst %.pb.cc,%.pb.desc,$(PROTO_SOURCES))
 PROTOBUF_LDFLAGS     := $(shell pkg-config --libs protobuf)
 PROTOBUF_CFLAGS      := $(shell pkg-config --cflags protobuf)
+PROTOC               := $(shell which protoc)
+PROTOC_VERSION       := $(shell $(PROTOC) --version)
+PROTOC_MIN_VERSION   := 2.5.0
+PROTOC_CHECK         := $(shell ./check-protoc-version.sh $(PROTOC_MIN_VERSION))
+
+
+$(info protoc version is: $(PROTOC_VERSION) required minimum is: $(PROTOC_MIN_VERSION))
+ifeq ($(PROTOC_CHECK), OK)
+  $(info protoc check result is $(PROTOC_CHECK))
+else
+  $(error protoc check result is $(PROTOC_CHECK))
+endif
 
 # FIXME on Windows
 FIX_CXX_11_BUG =
@@ -16,15 +28,15 @@ FIX_CXX_11_BUG  = -Wl,--no-as-needed
 LINUX_LDFLAGS   = -pthread
 endif
 
-CXXFLAGS += -std=c++11 -fPIC $(FIX_CXX_11_BUG) $(LINUX_LDFLAGS) $(PROTOBUF_CFLAGS) -I$(BUILD_ROOT)/.
+CXXFLAGS += -std=c++11 -fPIC $(FIX_CXX_11_BUG) $(LINUX_LDFLAGS) $(PROTOBUF_CFLAGS) -I$(BUILD_ROOT)/. -Wall
 LDFLAGS += $(FIX_CXX_11_BUG) $(LINUX_LDFLAGS) $(PROTOBUF_LDFLAGS) 
 
 PROTO_LIB := libproto.a
 
-all: proto-static-lib $(PROTO_DESCS) 
+all: $(PROTO_LIB) $(PROTO_DESCS) 
 
-proto-static-lib: $(PROTO_OBJECTS) 
-	ar rcs $(PROTO_LIB) $(PROTO_OBJECTS)
+$(PROTO_LIB): $(PROTO_OBJECTS) 
+	ar rcsv $(PROTO_LIB) $(PROTO_OBJECTS)
 
 %.pb.o: %.pb.cc %.pb.h
 
