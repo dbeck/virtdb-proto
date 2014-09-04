@@ -7,6 +7,18 @@ PROTO_OBJECTS        := $(patsubst %.pb.cc,%.pb.o,$(PROTO_SOURCES))
 PROTO_DESCS          := $(patsubst %.pb.cc,%.pb.desc,$(PROTO_SOURCES))
 PROTOBUF_LDFLAGS     := $(shell pkg-config --libs protobuf)
 PROTOBUF_CFLAGS      := $(shell pkg-config --cflags protobuf)
+PROTOC               := $(shell which protoc)
+PROTOC_VERSION       := $(shell $(PROTOC) --version)
+PROTOC_MIN_VERSION   := 2.5.0
+PROTOC_CHECK         := $(shell ./check-protoc-version.sh $(PROTOC_MIN_VERSION))
+
+
+$(info "protoc version is: " $(PROTOC_VERSION))
+ifeq ($(PROTOC_CHECK), OK)
+  $(info protoc check result is $(PROTOC_CHECK))
+else
+  $(error protoc check result is $(PROTOC_CHECK))
+endif
 
 # FIXME on Windows
 FIX_CXX_11_BUG =
