@@ -13,7 +13,7 @@ PROTOC_MIN_VERSION   := 2.5.0
 PROTOC_CHECK         := $(shell ./check-protoc-version.sh $(PROTOC_MIN_VERSION))
 
 
-$(info "protoc version is: " $(PROTOC_VERSION))
+$(info protoc version is: $(PROTOC_VERSION) required minimum is: $(PROTOC_MIN_VERSION))
 ifeq ($(PROTOC_CHECK), OK)
   $(info protoc check result is $(PROTOC_CHECK))
 else
@@ -33,10 +33,10 @@ LDFLAGS += $(FIX_CXX_11_BUG) $(LINUX_LDFLAGS) $(PROTOBUF_LDFLAGS)
 
 PROTO_LIB := libproto.a
 
-all: proto-static-lib $(PROTO_DESCS) 
+all: $(PROTO_LIB) $(PROTO_DESCS) 
 
-proto-static-lib: $(PROTO_OBJECTS) 
-	ar rcs $(PROTO_LIB) $(PROTO_OBJECTS)
+$(PROTO_LIB): $(PROTO_OBJECTS) 
+	ar rcsv $(PROTO_LIB) $(PROTO_OBJECTS)
 
 %.pb.o: %.pb.cc %.pb.h
 
