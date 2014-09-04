@@ -2,7 +2,7 @@ package virtdb.interface.pb;
 import "common.proto";
 import "meta_data.proto";
 
-message Column { // PUB-SUB: channel:QueryId
+message Column { // PUB-SUB: channel: "QueryId ColumnName"
     required string     QueryId    = 1;
     required string     Name       = 2;
     required ValueType  Data       = 3;
@@ -35,5 +35,8 @@ message Query { // PUSH
     optional string      Schema      = 6;
     optional string      UserToken   = 7;
     optional KeyValue    AccessInfo  = 8;
+    // max-chunk-size
+    // stop-query
+    // resend column+seqno
 }
 

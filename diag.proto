@@ -37,10 +37,10 @@ message ProcessInfo {
 // trace events.
 
 enum LogLevel {
-  INFO            = 1;
-  ERROR           = 2;
-  SIMPLE_TRACE    = 3;
-  SCOPED_TRACE    = 4;
+  VIRTDB_INFO            = 1;
+  VIRTDB_ERROR           = 2;
+  VIRTDB_SIMPLE_TRACE    = 3;
+  VIRTDB_SCOPED_TRACE    = 4;
 }
 
 // Log entries are sliced into a sequence of strings, variables or (string=variable)
@@ -91,7 +91,7 @@ message LogData {
 // once, but may be re-sent from time to time (or when
 // asked). Data is the dynamic part of the log message.
 
-message LogRecord { // PUSH, PUB-SUB
+message LogRecord { // PUSH, PUB-SUB: channel: "procname hostname"
   required   ProcessInfo  Process              = 1;
   repeated   Symbol       Symbols              = 2;
   repeated   LogHeader    Headers              = 3;
