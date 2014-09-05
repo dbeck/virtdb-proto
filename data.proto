@@ -27,16 +27,23 @@ message Expression {
 }
 
 message Query { // PUSH
-    required string      QueryId     = 1;
-    required string      Table       = 2;
-    repeated Field       Fields      = 3;
-    repeated Expression  Filter      = 4;
-    optional uint64      Limit       = 5;
-    optional string      Schema      = 6;
-    optional string      UserToken   = 7;
-    optional KeyValue    AccessInfo  = 8;
-    // max-chunk-size
-    // stop-query
-    // resend column+seqno
+
+    enum Command {
+      STOP            = 1;  //
+      RESEND_TABLE    = 2;  // must send full query info
+      RESEND_CHUNK    = 3;  // must send QueryId + Fields + SeqNos
+    }
+
+    required string      QueryId       = 1;
+    required string      Table         = 2;
+    repeated Field       Fields        = 3;
+    repeated Expression  Filter        = 4;
+    optional uint64      Limit         = 5;
+    optional string      Schema        = 6;
+    optional string      UserToken     = 7;
+    optional KeyValue    AccessInfo    = 8;
+    optional uint64      MaxChunkSize  = 9;
+    repeated uint64      SeqNos        = 10 [packed=true];
+    optional Command     QueryControl  = 11;
 }
 
