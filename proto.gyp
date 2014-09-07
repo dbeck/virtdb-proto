@@ -14,6 +14,7 @@
     ],
     'cflags': [
       '-std=c++11',
+      '-Wall',
     ],
     'defines': [ 
       'PIC',
