@@ -19,6 +19,7 @@ enum ServiceType {
   CONFIG           = 8;   // REQ-REP, PUB-SUB
   ENDPOINT         = 9;   // REQ-REP, PUB-SUB
   IP_DISCOVERY     = 10;  // RAW_UDP
+  OTHER            = 11;  // UNSPEC
 }
 
 enum ConnectionType {
@@ -37,6 +38,7 @@ message EndpointData {
   required string           Name          = 1;
   required ServiceType      SvcType       = 2;
   repeated Connection       Connections   = 3;
+  optional string           SubType       = 4;
 }
 
 message Endpoint { // REQ-REP, PUB-SUB channel: "#ServiceType EndpointName"
