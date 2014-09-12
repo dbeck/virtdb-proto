@@ -3,8 +3,8 @@ import "common.proto";
 import "meta_data.proto";
 
 enum CompressionType {
-  NONE = 0;
-  LZ4  = 1;
+  NO_COMPRESSION    = 0;
+  LZ4_COMPRESSION   = 1;
 };
 
 message Column { // PUB-SUB: channel: "QueryId ColumnName"
@@ -13,7 +13,7 @@ message Column { // PUB-SUB: channel: "QueryId ColumnName"
     required ValueType        Data            = 3;
     required uint64           SeqNo           = 4;
     optional bool             EndOfData       = 5;
-    optional CompressionType  CompType        = 6;
+    optional CompressionType  CompType        = 6 [default=NO_COMPRESSION];
     optional bytes            CompressedData  = 7;
 }
 
@@ -52,6 +52,6 @@ message Query { // PUSH
     optional uint64           MaxChunkSize         = 9;
     repeated uint64           SeqNos               = 10 [packed=true];
     optional Command          QueryControl         = 11;
-    optional CompressionType  RequestCompression   = 12;
+    optional CompressionType  RequestCompression   = 12 [default=NO_COMPRESSION];
 }
 
