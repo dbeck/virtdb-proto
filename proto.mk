@@ -41,7 +41,7 @@ $(PROTO_LIB): $(PROTO_OBJECTS)
 
 .PRECIOUS: $(PROTO_SOURCES) $(PROTO_HEADERS)
 
-%.pb.o: %.pb.cc %.pb.h
+$(PROTO_OBJECTS): $(PROTO_SOURCES) $(PROTO_HEADERS)
 
 %.pb.cc %.pb.h: %.proto
 	protoc -I $(PROTO_PATH)/ --cpp_out=$(PROTO_PATH)/ $<
