@@ -3,6 +3,7 @@ PROTO_PATH           := $(BUILD_ROOT)/
 PROTO_FILE_NAMES     := common.proto meta_data.proto db_config.proto data.proto svc_config.proto diag.proto
 PROTO_FILES          := $(patsubst %.proto,$(PROTO_PATH)/%.proto,$(PROTO_FILE_NAMES)) 
 PROTO_SOURCES        := $(patsubst %.proto,%.pb.cc,$(PROTO_FILES))
+PROTO_HEADERS        := $(patsubst %.proto,%.pb.h,$(PROTO_FILES))
 PROTO_OBJECTS        := $(patsubst %.pb.cc,%.pb.o,$(PROTO_SOURCES))
 PROTO_DESCS          := $(patsubst %.pb.cc,%.pb.desc,$(PROTO_SOURCES))
 PROTOBUF_LDFLAGS     := $(shell pkg-config --libs protobuf)
@@ -37,6 +38,8 @@ all: $(PROTO_LIB) $(PROTO_DESCS)
 
 $(PROTO_LIB): $(PROTO_OBJECTS) 
 	ar rcsv $(PROTO_LIB) $(PROTO_OBJECTS)
+
+.PRECIOUS: $(PROTO_SOURCES) $(PROTO_HEADERS)
 
 %.pb.o: %.pb.cc %.pb.h
 
