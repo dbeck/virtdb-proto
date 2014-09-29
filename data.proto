@@ -8,13 +8,14 @@ enum CompressionType {
 };
 
 message Column { // PUB-SUB: channel: "QueryId ColumnName"
-    required string           QueryId         = 1;
-    required string           Name            = 2;
-    required ValueType        Data            = 3;
-    required uint64           SeqNo           = 4;
-    optional bool             EndOfData       = 5;
-    optional CompressionType  CompType        = 6 [default=NO_COMPRESSION];
-    optional bytes            CompressedData  = 7;
+    required string           QueryId           = 1;
+    required string           Name              = 2;
+    required ValueType        Data              = 3;
+    required uint64           SeqNo             = 4;
+    optional bool             EndOfData         = 5;
+    optional CompressionType  CompType          = 6 [default=NO_COMPRESSION];
+    optional bytes            CompressedData    = 7;
+    optional uint64           UncompressedSize  = 8;
 }
 
 message SimpleExpression {
