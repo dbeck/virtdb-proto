@@ -8,6 +8,7 @@ message ServerConfig { // PUSH
   repeated KeyValue   Properties  = 3; 
   repeated TableMeta  Tables      = 4;
   repeated string     Users       = 5;
+  optional string     Schema      = 6;
 }
 
 // GUI -> db_config service to tell what is configured

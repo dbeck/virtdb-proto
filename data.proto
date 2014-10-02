@@ -53,5 +53,6 @@ message Query { // PUSH
     optional uint64           MaxChunkSize         = 9;
     repeated uint64           SeqNos               = 10 [packed=true];
     optional Command          QueryControl         = 11;
+    optional string           SegmentId            = 12;
 }
 
