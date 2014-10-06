@@ -37,9 +37,15 @@
       },],
       ['OS=="linux"', { 
         'cflags':                        [ '<!@(pkg-config --cflags protobuf)' ],
+        'variables': {
+          'proto_libdir' : '<!(pkg-config --libs-only-L protobuf)',
+        },
         'link_settings': {
           'ldflags':                     [ '-Wl,--no-as-needed', ],
-          'libraries':                   [ '<!@(pkg-config --libs-only-L --libs-only-l protobuf)', ],
+          'libraries':                   [
+                                           '<!@(pkg-config --libs-only-L --libs-only-l protobuf)',
+                                           '<!@(./genrpath.sh "<(proto_libdir)")',
+                                         ],
         },
       },],
     ],
