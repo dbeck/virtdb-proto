@@ -7,7 +7,7 @@ enum CompressionType {
   LZ4_COMPRESSION   = 1;
 };
 
-message Column { // PUB-SUB: channel: "QueryId ColumnName"
+message Column { // PUB-SUB: channel: "QueryId SegmenId-IfPresent"
     required string           QueryId           = 1;
     required string           Name              = 2;
     required ValueType        Data              = 3;
