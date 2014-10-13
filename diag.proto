@@ -53,6 +53,10 @@ enum LogLevel {
 //   LogPart := (IsVariable=true,  Type=DATE,   PartSymbol=#y)
 // Plus one LogData record to store '2000.01.01' value.
 
+// 1, if( part.isvariable() && part.hasdata() )
+// 2, else if( part.hasdata() )
+// 3, else if( part.has_partsymbol() )
+
 message LogPart {
   required   bool         IsVariable         = 1;
   required   bool         HasData            = 2;
