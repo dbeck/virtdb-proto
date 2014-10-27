@@ -39,6 +39,7 @@ message EndpointData {
   required ServiceType      SvcType       = 2;
   repeated Connection       Connections   = 3;
   optional string           SubType       = 4;
+  optional uint64           ValidForMs    = 5;
 }
 
 message Endpoint { // REQ-REP, PUB-SUB channel: "#ServiceType EndpointName"
