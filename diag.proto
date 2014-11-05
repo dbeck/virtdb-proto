@@ -41,6 +41,7 @@ enum LogLevel {
   VIRTDB_ERROR           = 2;
   VIRTDB_SIMPLE_TRACE    = 3;
   VIRTDB_SCOPED_TRACE    = 4;
+  VIRTDB_STATUS          = 5;
 }
 
 // Log entries are sliced into a sequence of strings, variables or (string=variable)
