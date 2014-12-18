@@ -39,3 +39,6 @@ Debug/
 
 #xcode
 ._*.proto
+
+# node
+node_modules/
