@@ -1,6 +1,6 @@
 {
   "name": "virtdb-proto",
-  "version": "1.5.6",
+  "version": "1.5.7",
   "description": "Protocol descriptors for VirtDB",
   "main": "lib/virtdb-proto.js",
   "directories": {
