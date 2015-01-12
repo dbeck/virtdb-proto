@@ -2,6 +2,9 @@
 cd $WORKSPACE
 git clone --recursive https://github.com/starschema/virtdb-proto virtdb-proto
 cd virtdb-proto
+git config user.name $GITHUB_USER
+git config user.email $GITHUB_EMAIL
+git config user.password $GITHUB_PASSWORD
 VERSION=`npm version patch`
 echo $VERSION
 git add package.json
