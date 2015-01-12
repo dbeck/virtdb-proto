@@ -1,4 +1,5 @@
 #!/bin/bash
+cd $WORKSPACE
 VERSION=`npm version patch`
 echo $VERSION
 git add package.json
