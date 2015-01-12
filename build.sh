@@ -1,5 +1,4 @@
 #!/bin/bash
-mkdir -p $WORKSPACE
 cd $WORKSPACE
 git clone --recursive https://github.com/starschema/virtdb-proto virtdb-proto
 cd virtdb-proto
