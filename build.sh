@@ -1,6 +1,7 @@
 #!/bin/bash
 cd $WORKSPACE
-git clone --recursive https://github.com/starschema/virtdb-proto virtdb-proto
+rm -rf virtdb-proto/*
+git clone --recursive https://$GITHUB_USER:$GITHUB_PASSWORD@github.com/starschema/virtdb-proto virtdb-proto
 cd virtdb-proto
 git config user.name $GITHUB_USER
 git config user.email $GITHUB_EMAIL
